@@ -7,6 +7,8 @@ test('homepage semantics, assets, accessible tabs and local links', async ({ pag
   await page.goto('/');
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveText('API work, with lessUI in the way.');
+  await expect(page.locator('img:not([alt])')).toHaveCount(0);
+  await expect(page.locator('img[alt=""]')).toHaveCount(0);
   const graphql = page.locator('#graphql');
   await graphql.getByRole('tab', { name: 'Variables' }).click();
   await expect(graphql.getByRole('tabpanel')).toContainText('Structured variables.');
