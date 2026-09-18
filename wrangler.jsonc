@@ -1,0 +1,14 @@
+{
+  "name": "purr-website",
+  "compatibility_date": "2026-09-18",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "usepurr.com",
+      "custom_domain": true,
+    },
+  ],
+  "assets": {
+    "directory": "./dist",
+  },
+}

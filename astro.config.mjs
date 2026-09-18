@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import { loadEnv } from 'vite';
 const env = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), 'PUBLIC_');
-const site = env.PUBLIC_SITE_URL || 'https://purr.example';
+const site = env.PUBLIC_SITE_URL || 'https://usepurr.com';
 export default defineConfig({
   site,
   output: 'static',

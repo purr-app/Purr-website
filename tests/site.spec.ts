@@ -134,9 +134,24 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
     await expect(page.locator(href!)).toHaveCount(1);
   }
   await page.goto('/');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    'https://usepurr.com/',
+  );
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content',
+    'https://usepurr.com/',
+  );
   const data = JSON.parse(await page.locator('script[type="application/ld+json"]').innerText());
   expect(data['@type']).toBe('SoftwareApplication');
   expect(data.operatingSystem).toBe('macOS');
+  expect(data.url).toBe('https://usepurr.com/');
+  const robots = await (await request.get('/robots.txt')).text();
+  expect(robots).toContain('Allow: /');
+  expect(robots).toContain('Sitemap: https://usepurr.com/sitemap-index.xml');
+  await page.goto('/download/');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
   await page.goto('/changelog/');
   await expect(page.getByText('Example release')).toHaveCount(0);
   await expect(page.getByText('v0.4.0')).toHaveCount(0);

@@ -9,7 +9,7 @@ Verified locally on September 18, 2026.
 - Reduced motion: none of the three videos downloads automatically; explicit play and pause still work.
 - Layout: no document-level horizontal overflow at 320, 375, 390, 768, 1024, or 1440 pixels. Screenshot frames intentionally scroll at smaller sizes.
 - Visual review: desktop landing page, mobile hero and feature sections, GraphQL states, Focus Mode crops, request timeline, variables, and Docs layout inspected in Chromium screenshots. Original product UI is preserved.
-- SEO configuration: an isolated test build with `PUBLIC_SITE_URL=https://purr.test` confirms correct canonical URLs, absolute sitemap URLs, indexable Docs / Changelog, and robots.txt discovery. This test domain is not used by the delivered build.
+- SEO configuration: the release build uses `https://usepurr.com` for canonical URLs, sitemap entries, robots.txt discovery, structured data, and social metadata. Docs and Changelog are indexable.
 - Draft changelog entries are excluded. No fictitious version or release date appears on the site.
 - All landing-page internal destinations resolve. Documentation table-of-contents anchors resolve.
 
@@ -26,13 +26,13 @@ Mobile simulation against the production preview, after mobile video optimizatio
 | Total blocking time      | 0 ms      |
 | Cumulative layout shift  | 0         |
 
-These are local lab results, not production field measurements. The unconfigured preview intentionally blocks indexing; its SEO score is therefore not a production SEO result. Lighthouse also flags the differing desktop/mobile intrinsic dimensions of one **hidden** picture tab; the visible source uses explicit source dimensions and was visually checked for correct proportions.
+These are local lab results, not production field measurements. They predate the production indexing fix. Lighthouse also flags the differing desktop/mobile intrinsic dimensions of one **hidden** picture tab; the visible source uses explicit source dimensions and was visually checked for correct proportions.
 
 Fonts, images, and videos are hosted locally. The three desktop videos total approximately 1,055 KB; their mobile variants total approximately 331 KB. Videos are lazy-loaded, play once, and retain the final frame.
 
 ## Required launch inputs
 
-The implementation is complete; publication still needs the owner's real domain, macOS download, license URL, and full app privacy notice. GitHub links use the local Purr origin (`https://github.com/purr-app/Purr`); anonymous access returned 404 during verification. These were not in the supplied assets or copy. Until supplied, local holding pages explain their status, the release timeline has no fabricated entries, and indexing stays disabled for the reserved example domain.
+The `usepurr.com` custom domain is configured as the production origin. The macOS download, license URL, and full app privacy notice still need owner-provided values. GitHub links use the local Purr origin (`https://github.com/purr-app/Purr`); anonymous access returned 404 during verification. Local holding pages explain missing destinations, and the release timeline has no fabricated entries.
 
 OpenAPI/cURL and encryption use labeled conceptual diagrams because corresponding product screenshots were not supplied. Real captures can replace these without changing the surrounding layout.
 
@@ -57,7 +57,7 @@ OpenAPI/cURL and encryption use labeled conceptual diagrams because correspondin
 
 No document-level overflow at 320, 375, 390, 768, 1024, or 1440px. These measurements use the same browser and reduced-motion setting, after font loading.
 
-Final polish-build Lighthouse mobile lab check: **98 Performance / 100 Accessibility / 100 Best Practices**. FCP 1.1 s, LCP 2.3 s, total blocking time 0 ms, cumulative layout shift 0. The unconfigured preview still intentionally blocks indexing.
+Final polish-build Lighthouse mobile lab check before the indexing fix: **98 Performance / 100 Accessibility / 100 Best Practices**. FCP 1.1 s, LCP 2.3 s, total blocking time 0 ms, cumulative layout shift 0.
 
 ## Focused interaction pass
 
@@ -69,3 +69,11 @@ Final polish-build Lighthouse mobile lab check: **98 Performance / 100 Accessibi
 - Ten Playwright groups cover behavior, routes, keyboard controls, mobile overflow, reduced motion, replay, and automated accessibility checks. The Lighthouse numbers above are from the previous pass, not a new run.
 
 Current reduced-motion heights after fonts load: 10,807px at 1440px wide and 9,526px at 390px wide (21.4% and 18.1% below the original respectively).
+
+## Production indexing
+
+- The default release build emits `index, follow` and a canonical URL for `https://usepurr.com`.
+- `robots.txt` allows crawling and links to the absolute production sitemap.
+- The homepage JSON-LD and Open Graph metadata use absolute production URLs.
+- `PUBLIC_NOINDEX=true` produces `noindex, follow` and `Disallow: /` for private preview builds.
+- Placeholder and error routes retain page-level `noindex` directives.

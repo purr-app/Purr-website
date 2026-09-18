@@ -18,7 +18,8 @@ Open http://localhost:4321. `npm run build` type-checks the project and produces
 Copy `.env.example` to `.env` and supply verified public URLs:
 
 ```dotenv
-PUBLIC_SITE_URL=https://your-public-domain.com
+PUBLIC_SITE_URL=https://usepurr.com
+PUBLIC_NOINDEX=false
 PUBLIC_DOWNLOAD_URL=https://your-verified-macos-download
 PUBLIC_GITHUB_URL=https://github.com/purr-app/Purr
 PUBLIC_LICENSE_URL=https://your-published-license
@@ -26,7 +27,7 @@ PUBLIC_LICENSE_URL=https://your-published-license
 
 Rebuild after changing these values. All product links are centralized in `src/config.ts`; the site origin is read in `astro.config.mjs`.
 
-Without a public domain the site uses the reserved `purr.example` origin for build-time URL generation, omits canonical tags, and disables indexing. A real `PUBLIC_SITE_URL` enables canonical URLs, indexable Docs / Changelog, sitemap discovery in robots.txt, and absolute social metadata. Never publish the example origin as your production configuration.
+The production domain `https://usepurr.com` is the build-time default, so release builds have the correct canonical URLs even when no environment file is present. `PUBLIC_SITE_URL` can override it for another production domain; it controls canonical URLs, sitemap entries, robots.txt discovery, structured data, and social metadata. Set `PUBLIC_NOINDEX=true` only for private preview or staging builds.
 
 Download and license links lead to local holding pages if URLs are absent. GitHub links point directly to `https://github.com/purr-app/Purr`, the origin found in the local Purr checkout, and can be overridden with `PUBLIC_GITHUB_URL`. There is no local GitHub page. Anonymous access to this remote returned 404 during verification; its public visibility is not assumed. No binary, license grant, software release date, price, security certification, or tracking policy for the desktop app is invented. Supply the official app privacy notice before public launch; the existing privacy page explains only this website and the approved local storage claim.
 

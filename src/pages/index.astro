@@ -47,9 +47,8 @@ const application = {
   operatingSystem: 'macOS',
   description:
     'A focused, local-first HTTP and GraphQL API client with Focus Mode, Jaeger tracing, dynamic variables, and encrypted response storage.',
-  ...(Astro.site?.hostname !== 'purr.example'
-    ? { url: Astro.site?.href, image: new URL('/og.png', Astro.site).href }
-    : {}),
+  url: Astro.site?.href,
+  image: new URL('/og.png', Astro.site).href,
   featureList: features,
 };
 ---
