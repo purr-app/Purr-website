@@ -1,0 +1,58 @@
+---
+import { links } from '../config';
+import Icon from './Icon.astro';
+---
+
+<header class="site-header">
+  <div class="nav-shell">
+    <a class="brand" href="/" aria-label="Purr home">
+      <img src="/purr.svg" width="34" height="34" alt="" />
+      Purr<span class="brand-divider"></span>
+      <span class="brand-note">API CLIENT</span>
+    </a>
+    <button
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="main-nav"
+      aria-label="Open navigation"
+    >
+      <span></span>
+      <span></span>
+    </button>
+    <nav id="main-nav" aria-label="Main navigation">
+      <a href="/#features">Features</a>
+      <a href="/docs/">Docs</a>
+      <a href="/changelog/">Changelog</a>
+      <a href={links.github}>
+        GitHub <span aria-hidden="true">↗</span>
+      </a>
+      <a class="button nav-download" href={links.download}>
+        <Icon name="download" size={15} />
+        Download for macOS
+      </a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#main-nav');
+  function close() {
+    toggle?.setAttribute('aria-expanded', 'false');
+    nav?.classList.remove('open');
+  }
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    nav?.classList.toggle('open', open);
+  });
+  nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      close();
+      toggle.focus();
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element).closest('.site-header')) close();
+  });
+</script>

@@ -1,0 +1,90 @@
+---
+import Base from './Base.astro';
+import { getCollection } from 'astro:content';
+interface Props {
+  title: string;
+  description: string;
+  headings?: { depth: number; slug: string; text: string }[];
+  scaffold?: boolean;
+  current?: string;
+}
+const { title, description, headings = [], scaffold = false, current = '' } = Astro.props;
+const entries = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
+const index = entries.findIndex((entry) => entry.id === current);
+const previous = index > 0 ? entries[index - 1] : undefined;
+const next = current ? entries[index + 1] : entries[0];
+---
+
+<Base title={`${title} — Purr Docs`} description={description}>
+  <main id="main" class="docs-shell container">
+    <aside class="docs-sidebar">
+      <p>DOCUMENTATION</p>
+      <nav aria-label="Documentation">
+        <a href="/docs/" aria-current={!current ? 'page' : undefined}>
+          Overview
+        </a>
+        {entries.map((entry) => (
+          <a href={`/docs/${entry.id}/`} aria-current={entry.id === current ? 'page' : undefined}>
+            {entry.data.title}
+          </a>
+        ))}
+      </nav>
+    </aside>
+    <div>
+      <details class="docs-mobile-nav">
+        <summary>Documentation menu</summary>
+        <nav aria-label="Mobile documentation">
+          <a href="/docs/" aria-current={!current ? 'page' : undefined}>
+            Overview
+          </a>
+          {entries.map((entry) => (
+            <a href={`/docs/${entry.id}/`} aria-current={entry.id === current ? 'page' : undefined}>
+              {entry.data.title}
+            </a>
+          ))}
+        </nav>
+      </details>
+      <article class="docs-article">
+        <p class="eyebrow">PURR / DOCS</p>
+        <h1>{title}</h1>
+        <p class="docs-lead">{description}</p>
+        {scaffold && (
+          <p class="docs-notice">
+            This guide is being written. Here’s a short overview of the workflow.
+          </p>
+        )}
+        <div class="prose">
+          <slot />
+        </div>
+        <nav class="docs-pager" aria-label="Documentation pagination">
+          {previous ? (
+            <a href={`/docs/${previous.id}/`}>
+              <span>← PREVIOUS</span>
+              {previous.data.title}
+            </a>
+          ) : current ? (
+            <a href="/docs/">
+              <span>← PREVIOUS</span>Overview
+            </a>
+          ) : null}
+          {next && (
+            <a class="next" href={`/docs/${next.id}/`}>
+              <span>NEXT →</span>
+              {next.data.title}
+            </a>
+          )}
+        </nav>
+      </article>
+    </div>
+    <aside class="docs-toc">
+      <p>ON THIS PAGE</p>
+      <nav aria-label="On this page">
+        {headings
+          .filter((h) => h.depth === 2)
+          .map((h) => (
+            <a href={`#${h.slug}`}>{h.text}</a>
+          ))}
+      </nav>
+    </aside>
+  </main>
+</Base>

@@ -1,0 +1,40 @@
+---
+import Docs from '../../layouts/Docs.astro';
+import { getCollection } from 'astro:content';
+const entries = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Docs
+  title="The Purr handbook."
+  description="A focused workspace for HTTP, GraphQL, and everything that comes back."
+  headings={[
+    { depth: 2, slug: 'find-your-workflow', text: 'Find your workflow' },
+    { depth: 2, slug: 'about-these-guides', text: 'About these guides' },
+  ]}
+>
+  <h2 id="find-your-workflow">Find your workflow</h2>
+  <ul class="doc-index">
+    {entries.map((entry) => (
+      <li>
+        <a href={`/docs/${entry.id}/`}>
+          <strong>
+            {entry.data.title}{' '}
+            <span aria-hidden="true" style="display:inline">
+              ↗
+            </span>
+          </strong>
+          <span>{entry.data.description}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <h2 id="about-these-guides">About these guides</h2>
+  <p>
+    The handbook is taking shape. These short overviews introduce Purr’s workflows; detailed
+    instructions will follow.
+  </p>
+  <p>
+    For a tour of the app, <a href="/#features">explore Purr’s features</a>. Follow published
+    updates in the <a href="/changelog/">changelog</a>.
+  </p>
+</Docs>

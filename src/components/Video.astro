@@ -1,0 +1,100 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props {
+  name: string;
+  poster: ImageMetadata;
+  label: string;
+  hero?: boolean;
+}
+const { name, poster, label, hero = false } = Astro.props;
+const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality: 85 });
+---
+
+<figure class:list={['video-frame', { 'hero-video': hero }]} data-video>
+  <video
+    width="1920"
+    height="1170"
+    poster={cover.src}
+    data-src={`/media/${name}.mp4`}
+    data-mobile-src={`/media/${name}-mobile.mp4`}
+    autoplay={hero}
+    muted
+    loop
+    playsinline
+    preload="none"
+    aria-label={label}
+  ></video>
+  <figcaption class="video-caption">
+    <span>
+      <i class="status-dot"></i>
+      {label}
+    </span>
+    <button type="button" class="video-toggle" aria-label={`Play demo: ${name}`}>
+      Play demo <span aria-hidden="true">▶</span>
+    </button>
+  </figcaption>
+</figure>
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+    ?.saveData;
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((frame) => {
+    const video = frame.querySelector('video')!;
+    const button = frame.querySelector<HTMLButtonElement>('button')!;
+    let manualPause = false;
+    let manualPlay = false;
+    let visible = false;
+    const update = () => {
+      button.textContent = video.paused ? 'Play demo ▶' : 'Pause demo Ⅱ';
+      button.setAttribute(
+        'aria-label',
+        `${video.paused ? 'Play' : 'Pause'} demo: ${frame.classList.contains('hero-video') ? 'Focus Mode' : 'tracing'}`,
+      );
+    };
+    const play = async () => {
+      if (!video.src) {
+        video.src = matchMedia('(max-width: 700px)').matches
+          ? video.dataset.mobileSrc!
+          : video.dataset.src!;
+        video.load();
+      }
+      try {
+        await video.play();
+      } catch {
+        update();
+      }
+    };
+    video.addEventListener('play', update);
+    video.addEventListener('pause', update);
+    button.addEventListener('click', () => {
+      if (video.paused) {
+        manualPause = false;
+        manualPlay = true;
+        void play();
+      } else {
+        manualPause = true;
+        manualPlay = false;
+        video.pause();
+      }
+    });
+    new IntersectionObserver(
+      (entries) => {
+        visible = entries[0].isIntersecting;
+        if (visible && !manualPause && (manualPlay || (!reduced.matches && !saver))) void play();
+        else video.pause();
+      },
+      { threshold: 0.15 },
+    ).observe(frame);
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) {
+        manualPlay = false;
+        video.pause();
+      } else if (visible && !manualPause && !saver) void play();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) video.pause();
+      else if (visible && !manualPause && (manualPlay || (!reduced.matches && !saver))) void play();
+    });
+  });
+</script>

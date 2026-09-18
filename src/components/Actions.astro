@@ -1,0 +1,16 @@
+---
+import { links } from '../config';
+import Icon from './Icon.astro';
+---
+
+<div class="actions">
+  <a class="button primary" href={links.download}>
+    <Icon name="apple" />
+    Download for macOS
+  </a>
+  <a class="button secondary" href={links.github}>
+    <Icon name="github" />
+    View on GitHub
+    <Icon name="arrow" size={15} />
+  </a>
+</div>

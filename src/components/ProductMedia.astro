@@ -1,0 +1,59 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props {
+  src: ImageMetadata;
+  mobile?: ImageMetadata;
+  alt: string;
+  caption?: string;
+  class?: string;
+  eager?: boolean;
+}
+const { src, mobile, alt, caption, class: className = '', eager = false } = Astro.props;
+const mobileImage = mobile
+  ? await getImage({ src: mobile, width: 1560, format: 'webp', quality: 88 })
+  : undefined;
+---
+
+<figure class:list={['product-media', className]}>
+  <div
+    class="image-viewport"
+    tabindex="0"
+    role="region"
+    aria-label={`${caption || alt} Scroll to explore the screenshot.`}
+  >
+    <a
+      href={src.src}
+      target="_blank"
+      rel="noopener"
+      aria-label={`${alt}. Open full-size image in a new tab.`}
+    >
+      <picture>
+        {mobileImage && (
+          <source
+            media="(max-width: 640px)"
+            srcset={mobileImage.src}
+            width={mobileImage.attributes.width}
+            height={mobileImage.attributes.height}
+          />
+        )}
+        <Image
+          src={src}
+          alt={alt}
+          widths={[640, 960, 1440, 2000].filter((w) => w <= src.width)}
+          sizes="(max-width: 700px) 900px, (max-width: 1200px) 90vw, 1120px"
+          format="webp"
+          quality={86}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      </picture>
+    </a>
+  </div>
+  {caption && (
+    <figcaption>
+      <span>{caption}</span>
+      <span aria-hidden="true">↗</span>
+    </figcaption>
+  )}
+</figure>

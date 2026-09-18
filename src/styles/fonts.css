@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Space Grotesk Variable';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2')
+    format('woff2');
+}
+@font-face {
+  font-family: 'Google Sans Code Variable';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('@fontsource-variable/google-sans-code/files/google-sans-code-latin-wght-normal.woff2')
+    format('woff2');
+}

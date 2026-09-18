@@ -1,0 +1,32 @@
+---
+interface Props {
+  name: 'arrow' | 'download' | 'github' | 'apple' | 'lock' | 'terminal' | 'trace';
+  size?: number;
+}
+const { name, size = 18 } = Astro.props;
+const paths = {
+  arrow: 'M5 12h14m-6-6 6 6-6 6',
+  download: 'M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4',
+  github:
+    'M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-2.7c3.3-.4 6.7-1.6 6.7-7.3A5.7 5.7 0 0 0 19 4c.2-1 .1-2-.3-3 0 0-1.3-.4-4.2 1.6a14.5 14.5 0 0 0-7 0C4.6.6 3.3 1 3.3 1 2.9 2 2.8 3 3 4a5.7 5.7 0 0 0-1.7 4c0 5.7 3.4 6.9 6.7 7.3A3.5 3.5 0 0 0 7 18v4',
+  apple:
+    'M16.4 2c0 2-1.6 3.5-3.4 3.5 0-1.9 1.6-3.5 3.4-3.5ZM17 6c1.8 0 3.1.9 4 2-3.3 1.8-2.8 6 .4 7.3-.6 1.5-2.4 5.7-4.6 5.7-1.3 0-1.8-.8-3.3-.8-1.6 0-2.2.8-3.4.8C7.7 21 4 16.3 4 11.6 4 8.2 6 6 8.6 6c1.5 0 2.7.9 3.8.9S15.3 6 17 6Z',
+  lock: 'M7 11V7a5 5 0 0 1 10 0v4M5 11h14v11H5zM12 15v3',
+  terminal: 'm4 6 6 6-6 6m9 0h7',
+  trace: 'M4 4h6v6H4zM14 14h6v6h-6zM7 10v7h7M14 7h6M17 4v6',
+};
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <path d={paths[name]} />
+</svg>

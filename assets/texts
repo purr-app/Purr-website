@@ -1,0 +1,144 @@
+Purr
+
+Features
+Docs
+Changelog
+GitHub
+Download for macOS
+
+API work, with less UI in the way.
+
+A focused HTTP and GraphQL client that adapts the workspace around what you're doing — from request to response and trace.
+
+Send requests, inspect responses, follow traces, and keep your workflow focused.
+
+Download for macOS
+View on GitHub
+
+Local-first · HTTP · GraphQL · Jaeger Tracing · Encrypted Storage
+
+Follow the request past the response.
+
+Open the trace behind a request and see exactly where the time went.
+
+Purr integrates with Jaeger so you can move from the response to the trace without leaving your workflow.
+
+View trace
+
+The workspace follows your attention.
+
+Write the request with room to think.
+
+Send it, and the response takes over.
+
+Need to change something? Expand the request again without losing your response.
+
+Compose
+The request gets the canvas.
+
+Inspect
+The response takes over.
+
+Adjust
+Expand without losing context.
+
+HTTP without the ceremony.
+
+Build the request, send it, and inspect what came back.
+
+Headers, auth, body, timing and response data stay close without competing for your screen.
+
+GraphQL deserves more than a JSON textbox.
+
+Work with multiple operations, schema-aware editing, autocomplete, schema exploration, and structured variable forms without constantly switching between your query and raw JSON.
+
+Multiple operations
+Schema-aware editing
+Structured variables
+Form / JSON
+Operation-level send
+
+Explore GraphQL
+
+Let one response feed the next request.
+
+Extract values from a response and reuse them anywhere else in the workspace.
+
+No scripts just to pass an access token, ID, or generated value from one request into another.
+
+Learn about variables
+
+Query the response, not the scrollbar.
+
+Filter JSON responses in place with jq or JSONPath.
+
+Keep the original response intact and inspect only the data you care about.
+
+See filtering
+
+Bring your API with you.
+
+Paste cURL or import an OpenAPI 3 specification and start working without rebuilding requests by hand.
+
+Paste cURL
+Import OpenAPI 3
+
+See import options
+
+Detailed request insights.
+
+See connection time, TTFB, download time, headers, redirects, TLS details, and more without leaving the response.
+
+Open timeline
+
+Keep sensitive data safe.
+
+Store response data encrypted on your machine so local API history does not have to sit around as readable plaintext.
+
+Encrypt response storage
+
+Learn about encryption
+
+Focused when you want it. Split when you need it.
+
+Use Focus Mode for a single task, or switch to horizontal and vertical splits whenever you want request and response visible together.
+
+Focus
+Vertical Split
+Horizontal Split
+
+More features
+
+HTTP
+GraphQL
+Dynamic Variables
+jq
+JSONPath
+OpenAPI 3
+cURL Import
+Jaeger Tracing
+Encrypted Storage
+Request Timeline
+Focus Mode
+Horizontal Split
+Vertical Split
+Local Workspaces
+
+Try Purr.
+
+Download it, point it at an API, and see if the workflow fits.
+
+Download for macOS
+View on GitHub
+
+macOS · Local-first
+
+Purr
+
+A focused API client for HTTP and GraphQL.
+
+GitHub
+Docs
+Changelog
+Privacy
+License
