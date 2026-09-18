@@ -34,6 +34,9 @@ const { id, label, items, variant = '' } = Astro.props;
       </button>
     ))}
   </div>
+  <button class="showcase-rotation" type="button" aria-label={`Pause automatic previews: ${label}`}>
+    Pause previews
+  </button>
   {items.map((item, i) => (
     <div
       id={`${id}-panel-${i}`}
@@ -55,7 +58,50 @@ const { id, label, items, variant = '' } = Astro.props;
   document.querySelectorAll<HTMLElement>('[data-showcase]').forEach((group) => {
     const tabs = [...group.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     const panels = [...group.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const control = group.querySelector<HTMLButtonElement>('.showcase-rotation')!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let active = 0;
+    let visible = false;
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    function schedule() {
+      clearTimeout(timer);
+      control.hidden = reduced.matches;
+      control.textContent = stopped ? 'Resume previews' : 'Pause previews';
+      control.setAttribute(
+        'aria-label',
+        `${stopped ? 'Resume' : 'Pause'} automatic previews: ${group.querySelector('[role="tablist"]')!.getAttribute('aria-label')}`,
+      );
+      if (!visible || stopped || reduced.matches || document.hidden) return;
+      timer = setTimeout(() => {
+        activate((active + 1) % tabs.length);
+        schedule();
+      }, 5500);
+    }
+    function stop(event: Event) {
+      if ((event.target as Element).closest('.showcase-rotation')) return;
+      stopped = true;
+      schedule();
+    }
+    group.addEventListener('pointerdown', stop);
+    group.addEventListener('focusin', stop);
+    group.addEventListener('keydown', stop);
+    control.addEventListener('click', () => {
+      stopped = !stopped;
+      schedule();
+    });
+    new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting && entry.intersectionRatio >= 0.35;
+        schedule();
+      },
+      { threshold: [0, 0.35] },
+    ).observe(group);
+    document.addEventListener('visibilitychange', schedule);
+    reduced.addEventListener('change', schedule);
+    schedule();
     function activate(index: number, focus = false) {
+      active = index;
       tabs.forEach((tab, i) => {
         tab.setAttribute('aria-selected', String(i === index));
         tab.tabIndex = i === index ? 0 : -1;

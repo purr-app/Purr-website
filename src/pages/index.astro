@@ -5,6 +5,10 @@ import Video from '../components/Video.astro';
 import ProductMedia from '../components/ProductMedia.astro';
 import Showcase from '../components/Showcase.astro';
 import Icon from '../components/Icon.astro';
+import compose from '../assets/compose.webp';
+import inspect from '../assets/inspect.webp';
+import composeMobile from '../assets/mobile/compose.webp';
+import inspectMobile from '../assets/mobile/inspect.webp';
 import adjustMobile from '../assets/mobile/adjust.webp';
 import hero from '../assets/hero-end.webp';
 import tracing from '../assets/tracing-end.webp';
@@ -174,11 +178,33 @@ const application = {
           </li>
         </ol>
       </div>
-      <ProductMedia
-        src={adjust}
-        mobile={adjustMobile}
-        alt="The request expanded again while the previous response remains visible and dimmed below"
-        caption="Change the request. Keep the response in view."
+      <Showcase
+        id="focus"
+        label="Focus Mode states"
+        variant="focus-showcase"
+        items={[
+          {
+            label: 'Compose',
+            image: compose,
+            mobile: composeMobile,
+            alt: 'The request editor takes the canvas while composing a request',
+            description: 'Compose → Give the request your full attention.',
+          },
+          {
+            label: 'Inspect',
+            image: inspect,
+            mobile: inspectMobile,
+            alt: 'The response becomes the primary canvas after sending the request',
+            description: 'Inspect → Let the response take the canvas.',
+          },
+          {
+            label: 'Adjust',
+            image: adjust,
+            mobile: adjustMobile,
+            alt: 'The request expands while the previous response stays visible and dimmed below',
+            description: 'Adjust → Change the request. Keep the response in view.',
+          },
+        ]}
       />
     </section>
 
@@ -297,17 +323,17 @@ const application = {
           <p>A value in the response</p>
         </li>
         <li>
-          <span class="diagram-index">02 / EXTRACT</span>
+          <span class="diagram-index">02 / EXTRACT VALUE</span>
           <code>$.case.assignee.id</code>
           <p>Select it with JSONPath</p>
         </li>
         <li>
-          <span class="diagram-index">03 / VARIABLE</span>
+          <span class="diagram-index">03 / DYNAMIC VARIABLE</span>
           <code>assignee_id</code>
           <p>Keep a dynamic reference</p>
         </li>
         <li>
-          <span class="diagram-index">04 / REUSE</span>
+          <span class="diagram-index">04 / NEXT REQUEST</span>
           <code>{'${{assignee_id}}'}</code>
           <p>Use it in another request</p>
         </li>
@@ -491,13 +517,16 @@ const application = {
           <span class="muted">data safe.</span>
         </h2>
         <p>
-          Store response data encrypted on your machine so local API history does not have to sit
-          around as readable plaintext.
+          Responses can be encrypted before they are written to local storage, so your saved API
+          history does not have to sit on disk as readable plaintext.
         </p>
         <dl class="privacy-details">
           <div>
-            <dt>Response data, protected at rest.</dt>
-            <dd>Encryption applies to the response data saved in your local API history.</dd>
+            <dt>Encrypt before saving.</dt>
+            <dd>
+              Response data passes through encryption before it is written to your local API
+              history.
+            </dd>
           </div>
           <div>
             <dt>Stored on your machine.</dt>
@@ -524,7 +553,7 @@ const application = {
         <div class="vertical-connector" aria-hidden="true"></div>
         <div class="encryption-step encryption-active">
           <span class="diagram-index">02</span>
-          <span>Encryption</span>
+          <span>Encrypt</span>
           <Icon name="lock" />
         </div>
         <div class="vertical-connector" aria-hidden="true"></div>
@@ -536,8 +565,9 @@ const application = {
           </span>
         </div>
         <figcaption>
-          Response data → encryption → local storage.
-          <br />A local history you can keep working with.
+          Response → Encrypt → Local storage.
+          <br />
+          Encrypted before it reaches disk.
         </figcaption>
       </figure>
     </section>

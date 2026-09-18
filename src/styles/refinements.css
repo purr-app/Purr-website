@@ -804,3 +804,112 @@ main {
     padding-block: 45px;
   }
 }
+
+/* Focused motion polish: transforms never change the document flow. */
+main {
+  overflow-x: clip;
+}
+.hero.container {
+  width: min(1280px, calc(100% - 64px));
+}
+.hero-product {
+  z-index: 1;
+}
+.hero-video {
+  transform-origin: center top;
+}
+.hero-footnote {
+  position: relative;
+  padding-top: 100px;
+}
+.showcase {
+  position: relative;
+  min-width: 0;
+}
+.showcase-rotation {
+  display: block;
+  margin: 8px 2px 10px auto;
+  padding: 4px 7px;
+  font: inherit;
+  font-size: 11px;
+  color: #a1a1aa;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.showcase-rotation:hover {
+  color: #f4f4f5;
+}
+.showcase-rotation[hidden] {
+  display: none;
+}
+.focus-showcase .showcase-tabs {
+  justify-content: space-between;
+}
+.focus-showcase .showcase-tabs button {
+  padding: 13px 10px;
+  font-size: 12px;
+}
+.focus-showcase .product-media figcaption {
+  min-height: 50px;
+}
+.variable-diagram {
+  border-color: #304460;
+  background: linear-gradient(110deg, #111b29, #0e121c 65%);
+}
+.variable-diagram .diagram-index {
+  color: #bdcee5;
+  font-size: 10px;
+}
+.variable-diagram code {
+  font-size: 14px;
+}
+.variable-diagram li:not(:last-child):after {
+  color: #83b1ef;
+  font-size: 22px;
+}
+.filtering-section {
+  grid-template-columns: 0.72fr 1.4fr;
+  gap: 38px;
+}
+.filtering-section h2 {
+  font-size: clamp(34px, 3.3vw, 44px);
+}
+.filtering-section .video-frame {
+  border-color: #304460;
+  box-shadow: 0 18px 70px #0005;
+}
+@media (max-width: 900px) {
+  .filtering-section {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .hero.container {
+    width: calc(100% - 36px);
+  }
+  .hero-footnote {
+    padding-top: 38px;
+  }
+  .focus-showcase .showcase-tabs button {
+    font-size: 11px;
+  }
+  .variable-diagram .diagram-index {
+    font-size: 8px;
+  }
+  .variable-diagram code {
+    font-size: 12px;
+  }
+  .variable-diagram li {
+    grid-template-columns: 105px 1fr;
+  }
+  .filtering-section {
+    gap: 25px;
+  }
+}
+@media (max-width: 640px) {
+  .focus-showcase [role='tabpanel'] .image-viewport {
+    max-height: 280px;
+  }
+}

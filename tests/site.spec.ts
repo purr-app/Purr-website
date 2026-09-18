@@ -18,8 +18,8 @@ test('homepage semantics, assets, accessible tabs and local links', async ({ pag
     'aria-selected',
     'true',
   );
-  await expect(page.locator('#focus [role="tab"]')).toHaveCount(0);
-  await expect(page.locator('#focus img')).toHaveCount(1);
+  await expect(page.locator('#focus [role="tab"]')).toHaveCount(3);
+  await expect(page.locator('#focus img')).toHaveCount(3);
   await expect(page.locator('#layouts [role="tab"]')).toHaveCount(0);
   await expect(page.locator('#layouts .layout-comparison img')).toHaveCount(3);
   const layoutY = await page
@@ -103,6 +103,7 @@ test('mobile menu, documentation and overflow', async ({ page }) => {
 });
 
 test('reduced motion prevents video downloads until explicitly played', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const videos: string[] = [];
   page.on('request', (r) => {
@@ -112,6 +113,9 @@ test('reduced motion prevents video downloads until explicitly played', async ({
   await page.locator('#features').scrollIntoViewIfNeeded();
   await expect(page.locator('video[src]')).toHaveCount(0);
   expect(videos).toHaveLength(0);
+  await page
+    .locator('.hero-video')
+    .evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
   await page.locator('.hero-video .video-toggle').click();
   await expect(page.locator('.hero-video video')).toHaveAttribute('src', '/media/hero.mp4');
   await expect(page.locator('.hero-video .video-toggle')).toHaveText('Pause demo Ⅱ');
@@ -147,12 +151,13 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
 });
 
 test('demos play once, hold the final frame, and replay only on request', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
   await page.goto('/');
   await expect(page.locator('video')).toHaveCount(3);
   await expect(page.locator('video[loop]')).toHaveCount(0);
   for (const selector of ['.hero-video', '#features .video-frame', '#filtering .video-frame']) {
     const frame = page.locator(selector);
-    await frame.scrollIntoViewIfNeeded();
+    await frame.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
     const video = frame.locator('video');
     await expect
       .poll(() => video.evaluate((el) => (el as HTMLVideoElement).readyState))
@@ -162,8 +167,8 @@ test('demos play once, hold the final frame, and replay only on request', async 
       v.currentTime = v.duration - 0.1;
     });
     await expect(frame.locator('button')).toHaveText('Replay demo ↻');
-    await page.locator('footer').scrollIntoViewIfNeeded();
-    await frame.scrollIntoViewIfNeeded();
+    await page.locator('footer').evaluate((el) => el.scrollIntoView({ behavior: 'instant' }));
+    await frame.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
     expect(await video.evaluate((el) => (el as HTMLVideoElement).ended)).toBe(true);
     await expect(frame.locator('button')).toHaveText('Replay demo ↻');
     await frame.locator('button').click();
@@ -192,4 +197,71 @@ test('mobile layout comparison scrolls and reduced motion disables the entrance'
   expect((await request.get('/github/')).status()).toBe(404);
   await page.goto('/docs/');
   await expect(page.locator('.docs-notice')).toContainText('Still in progress');
+});
+
+test('previews rotate calmly only in view and stop after manual interaction', async ({ page }) => {
+  test.setTimeout(45000);
+  await page.goto('/');
+  for (const id of ['focus', 'graphql']) {
+    const group = page.locator(`#${id} [data-showcase]`);
+    await group.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(150);
+    const tabs = group.getByRole('tab');
+    await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
+    await page.waitForTimeout(4500);
+    await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
+    await page.waitForTimeout(1100);
+    await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+    await page.locator('footer').evaluate((el) => el.scrollIntoView());
+    await page.waitForTimeout(150);
+    await page.waitForTimeout(5800);
+    await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+    await tabs.nth(2).click();
+    await page.waitForTimeout(5800);
+    await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+    await tabs.nth(2).press('Home');
+    await expect(tabs.nth(0)).toBeFocused();
+  }
+});
+
+test('video playback requires 80% visibility and pauses below it', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/');
+  const video = page.locator('#filtering video');
+  const position = async (ratio: number) => {
+    await video.evaluate((el, fraction) => {
+      const r = el.getBoundingClientRect();
+      window.scrollTo(0, scrollY + r.top - (innerHeight - r.height * fraction));
+    }, ratio);
+  };
+  await position(0.75);
+  await page.waitForTimeout(250);
+  await expect(video).not.toHaveAttribute('src');
+  await position(0.85);
+  await expect.poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused)).toBe(false);
+  await position(0.75);
+  await expect.poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused)).toBe(true);
+  await position(0.85);
+  await expect.poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused)).toBe(false);
+});
+
+test('hero scale is clamped, layout-stable, and disabled with reduced motion', async ({ page }) => {
+  await page.goto('/');
+  const media = page.locator('.hero-video');
+  const height = await page.locator('.hero-product').evaluate((el) => el.clientHeight);
+  await page.locator('#features').evaluate((el) => el.scrollIntoView());
+  await expect
+    .poll(() => media.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a))
+    .toBeCloseTo(1.1, 2);
+  expect(await page.locator('.hero-product').evaluate((el) => el.clientHeight)).toBe(height);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(media).toHaveCSS('transform', 'none');
+  await page.locator('#focus').scrollIntoViewIfNeeded();
+  await expect(page.locator('#focus .showcase-rotation')).toBeHidden();
+  await page.waitForTimeout(5700);
+  await expect(page.locator('#focus [role="tab"]').first()).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
 });
