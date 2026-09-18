@@ -163,6 +163,7 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
     '/purr.svg',
     '/og.png',
     '/site.webmanifest',
+    '/third-party-licenses.txt',
   ])
     expect((await request.get(path)).ok(), path).toBeTruthy();
 });

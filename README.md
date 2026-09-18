@@ -27,6 +27,8 @@ PUBLIC_LICENSE_URL=https://your-published-license
 
 Rebuild after changing these values. All product links are centralized in `src/config.ts`; the site origin is read in `astro.config.mjs`.
 
+Keep credentials out of these `PUBLIC_` values: Astro embeds them into the generated site. Store deployment credentials and other secrets in Cloudflare's encrypted secrets or GitHub Actions secrets. Local `.env*`, `.dev.vars*`, Wrangler state, and common private-key formats are ignored by Git.
+
 The production domain `https://usepurr.com` is the build-time default, so release builds have the correct canonical URLs even when no environment file is present. `PUBLIC_SITE_URL` can override it for another production domain; it controls canonical URLs, sitemap entries, robots.txt discovery, structured data, and social metadata. Set `PUBLIC_NOINDEX=true` only for private preview or staging builds.
 
 Download and license links lead to local holding pages if URLs are absent. GitHub links point directly to `https://github.com/purr-app/Purr`, the origin found in the local Purr checkout, and can be overridden with `PUBLIC_GITHUB_URL`. There is no local GitHub page. Anonymous access to this remote returned 404 during verification; its public visibility is not assumed. No binary, license grant, software release date, price, security certification, or tracking policy for the desktop app is invented. Supply the official app privacy notice before public launch; the existing privacy page explains only this website and the approved local storage claim.
@@ -58,6 +60,8 @@ Original files are preserved in `assets/`. Only approved images and videos enter
 The 1920px H.264 videos are approximately 485 KB (hero), 249 KB (tracing), and 321 KB (JSONPath filtering). Their 960px mobile variants total approximately 331 KB. All have fast-start metadata and no audio. Each recording appears once, starts only when at least 80% of the video is visible, and holds its final frame after completion; it only restarts when the user chooses Replay. Playback pauses offscreen and when the document is hidden. Reduced motion and data saving block automatic loading while still allowing explicit playback. Posters are extracted from the final frames of the actual recordings. Focus Mode and GraphQL use screenshot tabs that rotate every 5.5 seconds while visible. Interaction pauses rotation until Resume is chosen; reduced motion disables it. The Hero media scales from 1 to 1.10 using a frame-throttled transform, without changing layout. The layout comparison keeps three static screenshots.
 
 Only the Latin Space Grotesk font is preloaded. Google Sans Code loads as needed. Both are locally hosted with `font-display: swap`. There is no analytics, cookie banner, or external font request.
+
+Space Grotesk and Google Sans Code are redistributed under the SIL Open Font License 1.1. Their copyright notices and the complete license text ship at `public/third-party-licenses.txt` and are linked from the website's License page. This notice covers the bundled fonts; it does not grant a license for Purr or this repository's original code and assets.
 
 To regenerate brand assets: `node scripts/brand-assets.mjs` (uses sharp).
 To regenerate product derivatives, install Python `Pillow` and `imageio-ffmpeg`, then run `python scripts/prepare-media.py` from the repository root. The committed derivatives make Python unnecessary for normal builds.
