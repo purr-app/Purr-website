@@ -18,13 +18,25 @@ test('homepage semantics, assets, accessible tabs and local links', async ({ pag
     'aria-selected',
     'true',
   );
-  for (const group of ['focus', 'layouts']) {
-    const section = page.locator(`#${group}`);
-    for (const tab of await section.getByRole('tab').all()) {
-      await tab.click();
-      await expect(tab).toHaveAttribute('aria-selected', 'true');
-    }
-  }
+  await expect(page.locator('#focus [role="tab"]')).toHaveCount(0);
+  await expect(page.locator('#focus img')).toHaveCount(1);
+  await expect(page.locator('#layouts [role="tab"]')).toHaveCount(0);
+  await expect(page.locator('#layouts .layout-comparison img')).toHaveCount(3);
+  const layoutY = await page
+    .locator('.layout-comparison article')
+    .evaluateAll((nodes) => nodes.map((n) => Math.round(n.getBoundingClientRect().top)));
+  expect(new Set(layoutY).size).toBe(1);
+  await expect(page.locator('#main-nav .nav-download')).toHaveText('Download');
+  await expect(page.locator('a[href="/github/"]')).toHaveCount(0);
+  await expect(page.locator('#main-nav a[href*="github.com/"]')).toHaveCount(1);
+  expect(
+    await page
+      .locator('main > section')
+      .evaluateAll(
+        (nodes) =>
+          nodes.findIndex((n) => n.id === 'graphql') < nodes.findIndex((n) => n.id === 'http'),
+      ),
+  ).toBe(true);
   const routes = await page
     .locator('a[href^="/"]')
     .evaluateAll((as) =>
@@ -46,11 +58,12 @@ test('WCAG AA automated checks on principal routes', async ({ page }) => {
     '/download/',
   ]) {
     await page.goto(route);
+    await expect(page.locator('main')).toHaveCSS('opacity', '1');
     const audit = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
       .analyze();
     expect(
-      audit.violations,
+      audit.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })),
       `${route}: ${JSON.stringify(audit.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })))}`,
     ).toEqual([]);
   }
@@ -59,10 +72,13 @@ test('WCAG AA automated checks on principal routes', async ({ page }) => {
 test('mobile menu, documentation and overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await expect(page.locator('main')).toHaveCSS('opacity', '1');
   const mobileAudit = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();
-  expect(mobileAudit.violations).toEqual([]);
+  expect(
+    mobileAudit.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })),
+  ).toEqual([]);
   const menu = page.getByRole('button', { name: 'Open navigation' });
   await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
@@ -108,6 +124,7 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
   request,
 }) => {
   await page.goto('/docs/requests/');
+  await expect(page.locator('.docs-notice')).toContainText('Still in progress');
   for (const a of await page.locator('.docs-toc a').all()) {
     const href = await a.getAttribute('href');
     await expect(page.locator(href!)).toHaveCount(1);
@@ -127,4 +144,52 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
     '/site.webmanifest',
   ])
     expect((await request.get(path)).ok(), path).toBeTruthy();
+});
+
+test('demos play once, hold the final frame, and replay only on request', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('video')).toHaveCount(3);
+  await expect(page.locator('video[loop]')).toHaveCount(0);
+  for (const selector of ['.hero-video', '#features .video-frame', '#filtering .video-frame']) {
+    const frame = page.locator(selector);
+    await frame.scrollIntoViewIfNeeded();
+    const video = frame.locator('video');
+    await expect
+      .poll(() => video.evaluate((el) => (el as HTMLVideoElement).readyState))
+      .toBeGreaterThan(1);
+    await video.evaluate((el) => {
+      const v = el as HTMLVideoElement;
+      v.currentTime = v.duration - 0.1;
+    });
+    await expect(frame.locator('button')).toHaveText('Replay demo ↻');
+    await page.locator('footer').scrollIntoViewIfNeeded();
+    await frame.scrollIntoViewIfNeeded();
+    expect(await video.evaluate((el) => (el as HTMLVideoElement).ended)).toBe(true);
+    await expect(frame.locator('button')).toHaveText('Replay demo ↻');
+    await frame.locator('button').click();
+    await expect(frame.locator('button')).toHaveText('Pause demo Ⅱ');
+    await frame.locator('button').click();
+  }
+});
+
+test('mobile layout comparison scrolls and reduced motion disables the entrance', async ({
+  page,
+  request,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  expect(await page.locator('main').evaluate((el) => getComputedStyle(el).animationName)).toBe(
+    'none',
+  );
+  const comparison = page.locator('.layout-comparison');
+  await comparison.scrollIntoViewIfNeeded();
+  expect(await comparison.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(true);
+  await comparison.focus();
+  await page.keyboard.press('End');
+  await comparison.evaluate((el) => (el.scrollLeft = el.scrollWidth));
+  expect(await comparison.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
+  expect((await request.get('/github/')).status()).toBe(404);
+  await page.goto('/docs/');
+  await expect(page.locator('.docs-notice')).toContainText('Still in progress');
 });

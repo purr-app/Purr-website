@@ -9,9 +9,16 @@ interface Props {
 }
 const { name, poster, label, hero = false } = Astro.props;
 const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality: 85 });
+const demoName =
+  (
+    { hero: 'Focus Mode', tracing: 'Jaeger tracing', jpath: 'JSONPath filtering' } as Record<
+      string,
+      string
+    >
+  )[name] || name;
 ---
 
-<figure class:list={['video-frame', { 'hero-video': hero }]} data-video>
+<figure class:list={['video-frame', { 'hero-video': hero }]} data-video data-demo-name={demoName}>
   <video
     width="1920"
     height="1170"
@@ -20,7 +27,6 @@ const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality
     data-mobile-src={`/media/${name}-mobile.mp4`}
     autoplay={hero}
     muted
-    loop
     playsinline
     preload="none"
     aria-label={label}
@@ -30,7 +36,7 @@ const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality
       <i class="status-dot"></i>
       {label}
     </span>
-    <button type="button" class="video-toggle" aria-label={`Play demo: ${name}`}>
+    <button type="button" class="video-toggle" aria-label={`Play demo: ${demoName}`}>
       Play demo <span aria-hidden="true">▶</span>
     </button>
   </figcaption>
@@ -45,12 +51,11 @@ const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality
     let manualPause = false;
     let manualPlay = false;
     let visible = false;
+    let completed = false;
     const update = () => {
-      button.textContent = video.paused ? 'Play demo ▶' : 'Pause demo Ⅱ';
-      button.setAttribute(
-        'aria-label',
-        `${video.paused ? 'Play' : 'Pause'} demo: ${frame.classList.contains('hero-video') ? 'Focus Mode' : 'tracing'}`,
-      );
+      const action = completed ? 'Replay' : video.paused ? 'Play' : 'Pause';
+      button.textContent = `${action} demo ${completed ? '↻' : video.paused ? '▶' : 'Ⅱ'}`;
+      button.setAttribute('aria-label', `${action} demo: ${frame.dataset.demoName}`);
     };
     const play = async () => {
       if (!video.src) {
@@ -65,10 +70,29 @@ const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality
         update();
       }
     };
+    const sync = () => {
+      if (
+        visible &&
+        !document.hidden &&
+        !manualPause &&
+        !completed &&
+        (manualPlay || (!reduced.matches && !saver))
+      )
+        void play();
+      else video.pause();
+    };
     video.addEventListener('play', update);
     video.addEventListener('pause', update);
+    // Keep the final decoded frame visible. Re-entering the viewport never restarts a finished demo.
+    video.addEventListener('ended', () => {
+      completed = true;
+      manualPlay = false;
+      update();
+    });
     button.addEventListener('click', () => {
-      if (video.paused) {
+      if (video.paused || completed) {
+        if (completed) video.currentTime = 0;
+        completed = false;
         manualPause = false;
         manualPlay = true;
         void play();
@@ -81,20 +105,14 @@ const cover = await getImage({ src: poster, width: 1440, format: 'webp', quality
     new IntersectionObserver(
       (entries) => {
         visible = entries[0].isIntersecting;
-        if (visible && !manualPause && (manualPlay || (!reduced.matches && !saver))) void play();
-        else video.pause();
+        sync();
       },
       { threshold: 0.15 },
     ).observe(frame);
     reduced.addEventListener('change', () => {
-      if (reduced.matches) {
-        manualPlay = false;
-        video.pause();
-      } else if (visible && !manualPause && !saver) void play();
+      if (reduced.matches) manualPlay = false;
+      sync();
     });
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) video.pause();
-      else if (visible && !manualPause && (manualPlay || (!reduced.matches && !saver))) void play();
-    });
+    document.addEventListener('visibilitychange', sync);
   });
 </script>

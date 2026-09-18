@@ -5,7 +5,7 @@ const external = (value: string | undefined, fallback: string) => {
   return url.href;
 };
 export const links = {
-  github: external(import.meta.env.PUBLIC_GITHUB_URL, '/github/'),
+  github: external(import.meta.env.PUBLIC_GITHUB_URL, 'https://github.com/purr-app/Purr'),
   download: external(import.meta.env.PUBLIC_DOWNLOAD_URL, '/download/'),
   license: external(import.meta.env.PUBLIC_LICENSE_URL, '/license/'),
 };

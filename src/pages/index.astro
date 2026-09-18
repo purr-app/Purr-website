@@ -5,16 +5,9 @@ import Video from '../components/Video.astro';
 import ProductMedia from '../components/ProductMedia.astro';
 import Showcase from '../components/Showcase.astro';
 import Icon from '../components/Icon.astro';
-import composeMobile from '../assets/mobile/compose.webp';
-import inspectMobile from '../assets/mobile/inspect.webp';
 import adjustMobile from '../assets/mobile/adjust.webp';
-import focusMobile from '../assets/mobile/focus.webp';
-import vertical_modeMobile from '../assets/mobile/vertical_mode.webp';
-import horisontal_modeMobile from '../assets/mobile/horisontal_mode.webp';
-import hero from '../assets/hero.webp';
-import tracing from '../assets/tracing.webp';
-import compose from '../assets/compose.webp';
-import inspect from '../assets/inspect.webp';
+import hero from '../assets/hero-end.webp';
+import tracing from '../assets/tracing-end.webp';
 import adjust from '../assets/adjust.webp';
 import vertical from '../assets/vertical_mode.webp';
 import horizontal from '../assets/horisontal_mode.webp';
@@ -24,7 +17,7 @@ import variables from '../assets/gql_var_form-detail.webp';
 import schema from '../assets/gql_schema-detail.webp';
 import autocomplete from '../assets/gql_autocomplete-detail.webp';
 import dynamic from '../assets/dynamic_vars-detail.webp';
-import filter from '../assets/filter.webp';
+import filter from '../assets/jpath-end.webp';
 import timeline from '../assets/timeline-detail.webp';
 const features = [
   'HTTP',
@@ -143,97 +136,50 @@ const application = {
       </div>
     </section>
 
-    <section id="focus" class="feature-section container" aria-labelledby="focus-title">
-      <div class="section-intro">
-        <div>
-          <p class="eyebrow">
-            <span class="section-number">02 /</span> FOCUS MODE
-          </p>
-          <h2 id="focus-title">
-            The workspace follows
-            <br />
-            <span class="muted">your attention.</span>
-          </h2>
-        </div>
-        <div class="section-description">
-          <p>
-            Write the request with room to think.
-            <br />
-            Send it, and the response takes over.
-          </p>
-          <p class="small-copy">
-            Need to change something? Expand the request again without losing your response.
-          </p>
-        </div>
-      </div>
-      <Showcase
-        id="focus"
-        label="Focus Mode workflow"
-        variant="focus-showcase"
-        items={[
-          {
-            label: 'Compose',
-            image: compose,
-            mobile: composeMobile,
-            alt: 'Focus Mode with the HTTP request body taking the canvas',
-            description: 'The request gets the canvas.',
-          },
-          {
-            label: 'Inspect',
-            image: inspect,
-            mobile: inspectMobile,
-            alt: 'After sending, the JSON response becomes primary and the request collapses',
-            description: 'The response takes over.',
-          },
-          {
-            label: 'Adjust',
-            image: adjust,
-            mobile: adjustMobile,
-            alt: 'The request expanded again while the previous response remains visible below',
-            description: 'Expand without losing context.',
-          },
-        ]}
-      />
-    </section>
-
-    <section id="http" class="feature-section container" aria-labelledby="http-title">
-      <div class="section-intro">
-        <div>
-          <p class="eyebrow emerald">
-            <span class="section-number">03 /</span> HTTP WORKFLOW
-          </p>
-          <h2 id="http-title">
-            HTTP without
-            <br />
-            <span class="muted">the ceremony.</span>
-          </h2>
-        </div>
-        <div class="section-description">
-          <p>Build the request, send it, and inspect what came back.</p>
-          <p class="small-copy">
-            Headers, auth, body, timing and response data stay close without competing for your
-            screen.
-          </p>
-          <a class="text-link" href="/docs/requests/">
-            Explore requests <Icon name="arrow" />
-          </a>
-        </div>
+    <section
+      id="focus"
+      class="feature-section container focus-compact"
+      aria-labelledby="focus-title"
+    >
+      <div class="focus-copy">
+        <p class="eyebrow">
+          <span class="section-number">02 /</span> FOCUS MODE
+        </p>
+        <h2 id="focus-title">
+          The workspace follows
+          <br />
+          <span class="muted">your attention.</span>
+        </h2>
+        <ol class="focus-steps">
+          <li>
+            <span>01</span>
+            <div>
+              <h3>Compose</h3>
+              <p>The request gets the canvas.</p>
+            </div>
+          </li>
+          <li>
+            <span>02</span>
+            <div>
+              <h3>Inspect</h3>
+              <p>The response takes over.</p>
+            </div>
+          </li>
+          <li>
+            <span>03</span>
+            <div>
+              <h3>Adjust</h3>
+              <p>Expand without losing context.</p>
+            </div>
+          </li>
+        </ol>
       </div>
       <ProductMedia
-        src={vertical}
-        mobile={vertical_modeMobile}
-        alt="Purr HTTP client showing a POST request to /case/planning/preview, its JSON body, and the 200 OK response side by side"
-        caption="The request and the response. Everything you need, close at hand."
+        src={adjust}
+        mobile={adjustMobile}
+        alt="The request expanded again while the previous response remains visible and dimmed below"
+        caption="Change the request. Keep the response in view."
       />
-      <div class="detail-strip">
-        <span class="emerald">GET</span>
-        <span class="blue">POST</span>
-        <span>Headers</span>
-        <span>Auth</span>
-        <span>Body</span>
-        <span>Response</span>
-        <span>Timing</span>
-      </div>
     </section>
 
     <section id="graphql" class="feature-section graphql-section" aria-labelledby="graphql-title">
@@ -241,7 +187,7 @@ const application = {
         <div class="section-intro">
           <div>
             <p class="eyebrow magenta">
-              <span class="section-number">04 /</span> FIRST-CLASS GRAPHQL
+              <span class="section-number">03 /</span> FIRST-CLASS GRAPHQL
             </p>
             <h2 id="graphql-title">
               GraphQL deserves more
@@ -294,6 +240,33 @@ const application = {
       </div>
     </section>
 
+    <section id="http" class="feature-section container http-summary" aria-labelledby="http-title">
+      <div>
+        <p class="eyebrow emerald">
+          <span class="section-number">04 /</span> HTTP WORKFLOW
+        </p>
+        <h2 id="http-title">HTTP without the ceremony.</h2>
+      </div>
+      <div>
+        <p>
+          Build the request, send it, and inspect what came back. Headers, auth, body, timing and
+          response data stay close without competing for your screen.
+        </p>
+        <a class="text-link" href="/docs/requests/">
+          Explore requests <Icon name="arrow" />
+        </a>
+      </div>
+      <div class="detail-strip">
+        <span class="emerald">GET</span>
+        <span class="blue">POST</span>
+        <span>Headers</span>
+        <span>Auth</span>
+        <span>Body</span>
+        <span>Response</span>
+        <span>Timing</span>
+      </div>
+    </section>
+
     <section id="variables" class="feature-section container" aria-labelledby="variables-title">
       <div class="section-intro">
         <div>
@@ -317,13 +290,27 @@ const application = {
           </a>
         </div>
       </div>
-      <ol class="flow-line variable-flow" aria-label="Dynamic variable workflow">
-        <li>Response</li>
-        <li>Extract value</li>
-        <li class="active">
-          <code>dynamic variable</code>
+      <ol class="variable-diagram" aria-label="From a response to a reusable request variable">
+        <li>
+          <span class="diagram-index">01 / RESPONSE</span>
+          <code>assignee.id</code>
+          <p>A value in the response</p>
         </li>
-        <li>Reuse in a request</li>
+        <li>
+          <span class="diagram-index">02 / EXTRACT</span>
+          <code>$.case.assignee.id</code>
+          <p>Select it with JSONPath</p>
+        </li>
+        <li>
+          <span class="diagram-index">03 / VARIABLE</span>
+          <code>assignee_id</code>
+          <p>Keep a dynamic reference</p>
+        </li>
+        <li>
+          <span class="diagram-index">04 / REUSE</span>
+          <code>{'${{assignee_id}}'}</code>
+          <p>Use it in another request</p>
+        </li>
       </ol>
       <ProductMedia
         src={dynamic}
@@ -332,7 +319,11 @@ const application = {
       />
     </section>
 
-    <section id="filtering" class="feature-section container" aria-labelledby="filter-title">
+    <section
+      id="filtering"
+      class="feature-section container filtering-section"
+      aria-labelledby="filter-title"
+    >
       <div class="section-intro">
         <div>
           <p class="eyebrow">
@@ -354,10 +345,10 @@ const application = {
           </a>
         </div>
       </div>
-      <ProductMedia
-        src={filter}
-        alt="A real Purr response filtered with JSONPath, showing the filter input and matching cases"
-        caption="A smaller result. The original response stays intact."
+      <Video
+        name="jpath"
+        poster={filter}
+        label="Filter the response with JSONPath. Keep the original intact."
       />
     </section>
 
@@ -432,42 +423,48 @@ const application = {
       </div>
     </section>
 
-    <section id="timeline" class="feature-section container" aria-labelledby="timeline-title">
-      <div class="section-intro">
-        <div>
-          <p class="eyebrow">
-            <span class="section-number">08 /</span> REQUEST TIMELINE
-          </p>
-          <h2 id="timeline-title">
-            Detailed
-            <br />
-            <span class="muted">request insights.</span>
-          </h2>
+    <section
+      id="timeline"
+      class="feature-section container timeline-section"
+      aria-labelledby="timeline-title"
+    >
+      <div class="timeline-copy">
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">
+              <span class="section-number">08 /</span> REQUEST TIMELINE
+            </p>
+            <h2 id="timeline-title">
+              Detailed
+              <br />
+              <span class="muted">request insights.</span>
+            </h2>
+          </div>
+          <div class="section-description">
+            <p>
+              See connection time, TTFB, download time, headers, redirects, TLS details, and more
+              without leaving the response.
+            </p>
+            <a class="text-link" href="/docs/requests/#request-timeline">
+              Open timeline <Icon name="arrow" />
+            </a>
+          </div>
         </div>
-        <div class="section-description">
-          <p>
-            See connection time, TTFB, download time, headers, redirects, TLS details, and more
-            without leaving the response.
-          </p>
-          <a class="text-link" href="/docs/requests/#request-timeline">
-            Open timeline <Icon name="arrow" />
-          </a>
+        <div class="timing-legend">
+          <span>
+            <i></i>Prepare
+          </span>
+          <span>
+            <i></i>Connection
+          </span>
+          <span>
+            <i></i>TTFB
+          </span>
+          <span>
+            <i></i>Download
+          </span>
+          <span>Every phase, in context.</span>
         </div>
-      </div>
-      <div class="timing-legend">
-        <span>
-          <i></i>Prepare
-        </span>
-        <span>
-          <i></i>Connection
-        </span>
-        <span>
-          <i></i>TTFB
-        </span>
-        <span>
-          <i></i>Download
-        </span>
-        <span>Every phase, in context.</span>
       </div>
       <ProductMedia
         src={timeline}
@@ -497,6 +494,19 @@ const application = {
           Store response data encrypted on your machine so local API history does not have to sit
           around as readable plaintext.
         </p>
+        <dl class="privacy-details">
+          <div>
+            <dt>Response data, protected at rest.</dt>
+            <dd>Encryption applies to the response data saved in your local API history.</dd>
+          </div>
+          <div>
+            <dt>Stored on your machine.</dt>
+            <dd>
+              Keep the responses you need in your local workspace, with encrypted storage instead of
+              readable plaintext.
+            </dd>
+          </div>
+        </dl>
         <a class="text-link" href="/docs/encryption/">
           Learn about encryption <Icon name="arrow" />
         </a>
@@ -525,7 +535,10 @@ const application = {
             ••••••
           </span>
         </div>
-        <figcaption>Encrypt response storage.</figcaption>
+        <figcaption>
+          Response data → encryption → local storage.
+          <br />A local history you can keep working with.
+        </figcaption>
       </figure>
     </section>
 
@@ -544,33 +557,55 @@ const application = {
           want request and response visible together.
         </p>
       </div>
-      <Showcase
-        id="layouts"
-        label="Workspace layout modes"
-        items={[
-          {
-            label: 'Focus',
-            image: focus,
-            mobile: focusMobile,
-            alt: 'Focus Mode with the Preview action weekend plan response taking the canvas',
-            description: 'One task. Room to focus.',
-          },
-          {
-            label: 'Vertical Split',
-            image: vertical,
-            mobile: vertical_modeMobile,
-            alt: 'Vertical Split showing the same request and response side by side',
-            description: 'Request and response, side by side.',
-          },
-          {
-            label: 'Horizontal Split',
-            image: horizontal,
-            mobile: horisontal_modeMobile,
-            alt: 'Horizontal Split showing the same request above its response',
-            description: 'Request above. Response below.',
-          },
-        ]}
-      />
+      <p class="layout-scroll-hint">
+        Scroll to compare all three layouts <span aria-hidden="true">→</span>
+      </p>
+      <div
+        class="layout-comparison"
+        tabindex="0"
+        role="region"
+        aria-label="Compare Focus, Vertical Split, and Horizontal Split screenshots"
+      >
+        <article>
+          <div class="layout-heading">
+            <span class="mono">01</span>
+            <h3>Focus</h3>
+            <span class="layout-glyph focus-glyph" aria-hidden="true"></span>
+          </div>
+          <ProductMedia
+            src={focus}
+
+            alt="Focus Mode with the Preview action weekend plan response taking the canvas"
+            caption="One task. Room to focus."
+          />
+        </article>
+        <article>
+          <div class="layout-heading">
+            <span class="mono">02</span>
+            <h3>Vertical Split</h3>
+            <span class="layout-glyph vertical-glyph" aria-hidden="true"></span>
+          </div>
+          <ProductMedia
+            src={vertical}
+
+            alt="Vertical Split showing the same request and response side by side"
+            caption="Request and response, side by side."
+          />
+        </article>
+        <article>
+          <div class="layout-heading">
+            <span class="mono">03</span>
+            <h3>Horizontal Split</h3>
+            <span class="layout-glyph horizontal-glyph" aria-hidden="true"></span>
+          </div>
+          <ProductMedia
+            src={horizontal}
+
+            alt="Horizontal Split showing the same request above its response"
+            caption="Request above. Response below."
+          />
+        </article>
+      </div>
     </section>
 
     <section class="feature-summary container" aria-labelledby="summary-title">

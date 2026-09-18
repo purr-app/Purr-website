@@ -8,7 +8,7 @@ interface Props {
   scaffold?: boolean;
   current?: string;
 }
-const { title, description, headings = [], scaffold = false, current = '' } = Astro.props;
+const { title, description, headings = [], scaffold = true, current = '' } = Astro.props;
 const entries = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
 const index = entries.findIndex((entry) => entry.id === current);
 const previous = index > 0 ? entries[index - 1] : undefined;
@@ -50,7 +50,8 @@ const next = current ? entries[index + 1] : entries[0];
         <p class="docs-lead">{description}</p>
         {scaffold && (
           <p class="docs-notice">
-            This guide is being written. Here’s a short overview of the workflow.
+            <strong>Still in progress</strong>
+            <span>These docs are being written. Some guides are only short overviews for now.</span>
           </p>
         )}
         <div class="prose">
