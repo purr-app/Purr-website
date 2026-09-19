@@ -1,0 +1,236 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import FeatureActions from '../components/FeatureActions.astro';
+import ProductMedia from '../components/ProductMedia.astro';
+import workspace from '../assets/hero.webp';
+import { links } from '../config';
+---
+
+<FeaturePage
+  title="Purr — A Local-First API Client"
+  description="Purr stores workspaces locally, requires no account, keeps secrets out of Git-friendly files, and encrypts sensitive response data before writing it to disk."
+  name="Local-first API client"
+  variant="local-page"
+>
+  <header class="container feature-hero local-hero">
+    <p class="eyebrow emerald">LOCAL-FIRST API CLIENT</p>
+    <h1>
+      Your API client should not need <span class="muted">your API data.</span>
+    </h1>
+    <p class="feature-lead">
+      When I started building Purr, the default assumption was simple: the requests belong on your
+      machine.
+    </p>
+    <p>
+      You should not need an account just to send an HTTP request, and your API history, cookies,
+      secrets, and response data should not quietly become somebody else’s cloud data.
+    </p>
+    <p class="local-principle">Purr is local-first by default.</p>
+    <FeatureActions />
+  </header>
+  <section class="container ownership-intro">
+    <div class="ownership-note">
+      <p class="eyebrow emerald">NO ACCOUNT REQUIRED</p>
+      <h2>
+        Open the app
+        <br />
+        and use it.
+      </h2>
+      <p>There is no required signup flow before you can create a workspace or send a request.</p>
+      <p>
+        Purr does not need an account to decide whether you are allowed to use your own local API
+        client. Your workspace exists locally and works locally.
+      </p>
+    </div>
+    <ProductMedia
+      src={workspace}
+      alt="Purr local Riverside Community workspace with saved requests, a response and the Saved locally status"
+      caption="Your requests, in your local workspace."
+    />
+  </section>
+  <section class="container feature-editorial">
+    <div>
+      <p class="eyebrow emerald">YOUR WORKSPACE IS YOURS</p>
+      <h2>Requests are stored on your machine.</h2>
+    </div>
+    <div class="feature-prose">
+      <p>Workspaces, requests, variables, and project configuration are stored locally.</p>
+      <p>
+        The goal is to make them easy to understand, move, back up, and eventually keep with the
+        project that uses them. This is also why Git-friendly workspace files are important to Purr.
+      </p>
+    </div>
+  </section>
+  <section class="container storage-story">
+    <div class="feature-heading-row">
+      <div>
+        <p class="eyebrow emerald">GIT-FRIENDLY DOES NOT MEAN SECRETS IN GIT</p>
+        <h2>
+          Share the request,
+          <br />
+          <span class="muted">not the credentials.</span>
+        </h2>
+      </div>
+      <p>
+        Some workspace data should be portable. Secrets should not. Purr separates sensitive values
+        from the files intended to live in your project or repository.
+      </p>
+    </div>
+    <!-- Conceptual storage diagram; no workspace-file or encryption-settings capture was supplied. -->
+    <div
+      class="storage-boundary"
+      role="group"
+      aria-label="Portable workspace definitions and separate local encrypted storage"
+    >
+      <div>
+        <span class="storage-label">PROJECT / GIT-FRIENDLY FILES</span>
+        <h3>
+          <code>workspace.yaml</code>
+        </h3>
+        <ul>
+          <li>Requests</li>
+          <li>Configuration</li>
+          <li>Variable definitions</li>
+        </ul>
+        <p>Portable request definitions</p>
+      </div>
+      <div>
+        <span class="storage-label">ON YOUR MACHINE / ENCRYPTED</span>
+        <h3>Local encrypted storage</h3>
+        <ul>
+          <li>Secrets</li>
+          <li>Cookies</li>
+          <li>Sensitive values</li>
+        </ul>
+        <p>Sensitive values stay separate</p>
+      </div>
+    </div>
+    <p class="storage-caption">
+      Authentication secrets, cookies, and other sensitive values are not written into the YAML
+      workspace files that are meant to be committed to Git.
+    </p>
+  </section>
+  <section class="container encryption-story">
+    <div>
+      <p class="eyebrow emerald">ENCRYPTED BEFORE IT HITS DISK</p>
+      <h2>Local does not have to mean plaintext.</h2>
+      <p>
+        API responses can contain much more sensitive data than the request itself. User records,
+        tokens, internal service responses, debugging payloads, or production data can easily end up
+        in local history.
+      </p>
+      <p>
+        Purr encrypts sensitive persisted data before storing it on disk. That includes the data
+        that should not simply sit around as readable application files.
+      </p>
+    </div>
+    <figure class="storage-pipeline">
+      <figcaption>ON YOUR MACHINE</figcaption>
+      <ol class="feature-flow vertical-flow" aria-label="Response encryption before local storage">
+        <li>
+          Response <code>{'{ … }'}</code>
+        </li>
+        <li class="encrypt-step">
+          Encrypt <span aria-hidden="true">↓</span>
+        </li>
+        <li>
+          Local storage <code>••••••</code>
+        </li>
+      </ol>
+      <p>Encrypted before it reaches disk.</p>
+    </figure>
+  </section>
+  <section class="container response-history">
+    <p class="eyebrow emerald">RESPONSES CAN STAY ENCRYPTED</p>
+    <h2>Response history should not become a plaintext archive.</h2>
+    <p>
+      Purr can store response bodies encrypted locally rather than leaving previous API responses
+      readable on disk. The client still needs to be able to show you the response when you open it,
+      but persisted response data is encrypted before storage.
+    </p>
+    <a class="text-link" href="/docs/encryption/">
+      Read about encryption →
+    </a>
+  </section>
+  <section class="container open-source-story">
+    <div class="source-mark" aria-hidden="true">
+      &lt;/&gt;<span>MIT / PUBLIC CORE</span>
+    </div>
+    <div>
+      <p class="eyebrow emerald">OPEN SOURCE WHERE TRUST MATTERS</p>
+      <h2>You can inspect the client you give your credentials to.</h2>
+      <p>
+        Purr’s public core is available under the MIT license. For an API client, I think that
+        matters.
+      </p>
+      <p>
+        You are putting authentication headers, cookies, internal endpoints, and sometimes
+        production data into the application. You should be able to inspect how the client handles
+        them instead of relying only on a privacy statement.
+      </p>
+      <p>
+        Some integrations and commercial functionality may live outside the public core, but the
+        client itself is being developed in the open.
+      </p>
+      <a class="text-link" href={links.github}>
+        View Purr on GitHub ↗
+      </a>
+    </div>
+  </section>
+  <section class="container feature-editorial">
+    <div>
+      <p class="eyebrow emerald">LOCAL-FIRST IS NOT OFFLINE-ONLY</p>
+      <h2>
+        Local ownership first.
+        <br />
+        <span class="muted">Integrations when you ask for them.</span>
+      </h2>
+    </div>
+    <div class="feature-prose">
+      <p>
+        Purr can connect to external systems when a feature requires it — for example a{' '}
+        <a href="/tracing/">tracing provider</a> you explicitly configure.
+      </p>
+      <p>
+        Local-first does not mean pretending the network does not exist. It means Purr does not
+        require its own cloud service to hold your requests just so the desktop client can work.
+      </p>
+    </div>
+  </section>
+  <section class="container data-story">
+    <p class="eyebrow emerald">WHY THIS MATTERS FOR AN API CLIENT</p>
+    <h2>The data inside a developer tool can be more sensitive than the tool itself.</h2>
+    <ul class="sensitive-data-list">
+      {[
+        'Authorization tokens',
+        'Cookies',
+        'Private service URLs',
+        'Request bodies',
+        'Customer data',
+        'Internal API responses',
+        'Debugging information',
+      ].map((value) => (
+        <li>{value}</li>
+      ))}
+    </ul>
+    <p>
+      For Purr, keeping that data local was not an extra privacy mode added later. It shaped how the
+      workspace and storage were designed.
+    </p>
+  </section>
+  <section class="container feature-end">
+    <h2>
+      Your requests can stay
+      <br />
+      <span class="muted">on your machine.</span>
+    </h2>
+    <p>
+      No required account, local workspaces, encrypted sensitive storage, and source you can
+      inspect.
+    </p>
+    <FeatureActions />
+    <a class="text-link" href="/docs/encryption/">
+      Read about encryption →
+    </a>
+  </section>
+</FeaturePage>

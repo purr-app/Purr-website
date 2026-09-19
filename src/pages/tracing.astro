@@ -1,0 +1,215 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import FeatureActions from '../components/FeatureActions.astro';
+import Video from '../components/Video.astro';
+import ProductMedia from '../components/ProductMedia.astro';
+import trace from '../assets/tracing.webp';
+import poster from '../assets/tracing-end.webp';
+---
+
+<FeaturePage
+  title="Purr — HTTP Client with Jaeger Tracing"
+  description="Send a request, inspect the response, and open the correlated Jaeger trace without leaving your API client."
+  name="Jaeger tracing"
+  variant="trace-page"
+>
+  <header class="feature-hero container trace-hero">
+    <p class="eyebrow">HTTP CLIENT / JAEGER TRACING</p>
+    <h1>
+      Follow the request
+      <br />
+      <span class="muted">past the response.</span>
+    </h1>
+    <p class="feature-lead">
+      Send the request, enable tracing, and Purr correlates the response with the matching trace so
+      you can open it directly from the request you just ran.
+    </p>
+    <FeatureActions docs="/docs/tracing/" label="Read tracing docs" />
+  </header>
+  <div class="container trace-stage">
+    <ol class="feature-flow" aria-label="Request to trace workflow">
+      <li>Send request</li>
+      <li>Receive response</li>
+      <li>Correlate trace</li>
+      <li>Inspect spans</li>
+    </ol>
+    <Video
+      name="tracing"
+      poster={poster}
+      label="Follow the response into its Jaeger trace and inspect a selected span."
+    />
+  </div>
+  <section class="container feature-editorial">
+    <div>
+      <p class="eyebrow">WHY I ADDED THIS</p>
+      <h2>Debugging shouldn’t start with searching for the request you just sent.</h2>
+    </div>
+    <div class="feature-prose">
+      <p>
+        When I was debugging slower endpoints, sending the request was usually the easy part. The
+        annoying part started after that.
+      </p>
+      <p>
+        I would send a request with curl, get the response, then open Jaeger and try to find the
+        trace that belonged to that exact request. If the endpoint touched several services or did
+        some CPU-heavy work, I would repeat this over and over while trying to understand where the
+        time actually went.
+      </p>
+      <p>A slow response tells you that something took too long. It rarely tells you what.</p>
+      <ul class="diagnostic-questions">
+        <li>Was it the database?</li>
+        <li>Was it another service?</li>
+        <li>Was it CPU work inside the application?</li>
+        <li>Did one downstream request dominate the whole response time?</li>
+        <li>Did my fix actually improve the part I thought it did?</li>
+      </ul>
+      <p>
+        The information already existed in tracing. The frustrating part was jumping from the API
+        client to another tool and then searching for the trace manually. That felt like something
+        the client could do for me.
+      </p>
+    </div>
+  </section>
+  <section class="container feature-band trace-context">
+    <p class="eyebrow">REQUEST AND TRACE STAY TOGETHER</p>
+    <div class="feature-editorial inner">
+      <h2>
+        One request,
+        <br />
+        <span class="muted">one debugging context.</span>
+      </h2>
+      <div class="feature-prose">
+        <p>Tracing in Purr is attached to the request workflow.</p>
+        <p>
+          You send a request as usual. If tracing is enabled for it, Purr looks for the trace
+          context associated with that execution and makes the matching trace available directly
+          from the response.
+        </p>
+        <p>
+          You don’t need to copy IDs between tools or remember which request happened at which
+          timestamp.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="container feature-section-block">
+    <div class="feature-heading-row">
+      <div>
+        <p class="eyebrow">SEE WHERE THE TIME WENT</p>
+        <h2>
+          The response time
+          <br />
+          <span class="muted">is only the beginning.</span>
+        </h2>
+      </div>
+      <p>
+        Once the trace is loaded, inspect the service tree and span durations to understand how the
+        request moved through the system.
+      </p>
+    </div>
+    <ProductMedia
+      src={trace}
+      alt="Purr Jaeger trace showing a 200 OK response, trace identifier, service waterfall and the selected request handler span with its duration"
+      caption="The real request, its correlated trace, and the selected span in one view."
+    />
+    <div class="trace-example">
+      <div>
+        <p class="eyebrow">ILLUSTRATIVE TIMING EXAMPLE</p>
+        <h3>824 ms tells only part of the story.</h3>
+        <p>That is much more useful than knowing only that the endpoint was “slow”.</p>
+      </div>
+      <ol aria-label="Illustrative nested span durations, not additive timings">
+        {[
+          ['API gateway', 824],
+          ['Request handler', 790],
+          ['Orders service', 650],
+          ['Inventory request', 520],
+          ['Database query', 470],
+        ].map(([name, time]) => (
+          <li>
+            <span>{name}</span>
+            <span class="span-track" aria-hidden="true">
+              <i style={`width:${(Number(time) / 824) * 100}%`}></i>
+            </span>
+            <code>{time} ms</code>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <section class="container trace-debug-loop">
+    <div>
+      <p class="eyebrow">USEFUL WHILE FIXING</p>
+      <h2>I wanted this for the request I am actively testing.</h2>
+    </div>
+    <ol class="feature-flow" aria-label="Debugging iteration">
+      <li>Change the code</li>
+      <li>Send the request</li>
+      <li>Inspect the trace</li>
+      <li>Compare the result</li>
+    </ol>
+    <div class="feature-prose">
+      <p>
+        Monitoring tools are great when an alert fires in production. But a lot of debugging happens
+        before that.
+      </p>
+      <p>
+        You change the code, send the same request again, compare the behavior, and check whether
+        the bottleneck moved or disappeared.
+      </p>
+      <p>
+        That loop is where having the trace directly beside the request becomes useful. Purr is
+        meant to make that loop shorter.
+      </p>
+    </div>
+  </section>
+  <section class="container feature-pair">
+    <div>
+      <p class="eyebrow">CURRENT SUPPORT</p>
+      <h2>
+        Jaeger today.
+        <br />
+        <span class="muted">More providers later.</span>
+      </h2>
+      <p>
+        The current tracing integration works with Jaeger. Configure your Jaeger connection, enable
+        tracing for a request, and Purr handles the request-to-trace workflow from there.
+      </p>
+      <p>
+        The integration layer is being designed so other tracing and observability providers can be
+        added later without changing how the request workflow works.
+      </p>
+      <a class="text-link" href="/docs/tracing/">
+        Set up Jaeger →
+      </a>
+    </div>
+    <div>
+      <p class="eyebrow">KEEP IT OPTIONAL</p>
+      <h2>
+        No tracing
+        <br />
+        <span class="muted">setup required.</span>
+      </h2>
+      <p>
+        Tracing is not required to use Purr. If all you need is an HTTP or{' '}
+        <a href="/graphql-client/">GraphQL client</a>, nothing changes.
+      </p>
+      <p>
+        Tracing only becomes part of the workflow when you configure it and enable it for the
+        requests where it is useful.
+      </p>
+    </div>
+  </section>
+  <section class="container feature-end">
+    <h2>
+      Send the request.
+      <br />
+      <span class="muted">Then see what actually happened.</span>
+    </h2>
+    <p>
+      Purr keeps the response and the trace connected so debugging does not start with searching
+      through another tool.
+    </p>
+    <FeatureActions docs="/docs/tracing/" label="Tracing documentation" />
+  </section>
+</FeaturePage>

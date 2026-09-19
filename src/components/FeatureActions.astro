@@ -1,0 +1,17 @@
+---
+import { links } from '../config';
+interface Props {
+  docs?: string;
+  label?: string;
+}
+const { docs, label = 'Read the docs' } = Astro.props;
+---
+
+<div class="actions feature-actions">
+  <a class="button primary" href={links.download}>
+    Download Purr <span aria-hidden="true">↓</span>
+  </a>
+  <a class="button secondary" href={docs || links.github}>
+    {docs ? label : 'View source on GitHub'} <span aria-hidden="true">↗</span>
+  </a>
+</div>

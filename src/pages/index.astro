@@ -5,6 +5,7 @@ import Video from '../components/Video.astro';
 import ProductMedia from '../components/ProductMedia.astro';
 import Showcase from '../components/Showcase.astro';
 import Icon from '../components/Icon.astro';
+import ExplorePurr from '../components/ExplorePurr.astro';
 import compose from '../assets/compose.webp';
 import inspect from '../assets/inspect.webp';
 import composeMobile from '../assets/mobile/compose.webp';
@@ -118,7 +119,7 @@ const application = {
             Purr integrates with Jaeger so you can move from the response to the trace without
             leaving your workflow.
           </p>
-          <a class="text-link" href="/docs/tracing/">
+          <a class="text-link" href="/tracing/">
             View trace <Icon name="arrow" />
           </a>
         </div>
@@ -226,7 +227,7 @@ const application = {
               and structured variable forms without constantly switching between your query and raw
               JSON.
             </p>
-            <a class="text-link" href="/docs/graphql/">
+            <a class="text-link" href="/graphql-client/">
               Explore GraphQL <Icon name="arrow" />
             </a>
           </div>
@@ -535,8 +536,8 @@ const application = {
             </dd>
           </div>
         </dl>
-        <a class="text-link" href="/docs/encryption/">
-          Learn about encryption <Icon name="arrow" />
+        <a class="text-link" href="/local-first-api-client/">
+          Why local-first <Icon name="arrow" />
         </a>
       </div>
       <!-- Conceptual diagram: no settings image, algorithm or key-management claims were supplied. -->
@@ -663,5 +664,6 @@ const application = {
       <Actions />
       <span class="mono final-note">macOS · Local-first</span>
     </section>
+    <ExplorePurr />
   </main>
 </Base>

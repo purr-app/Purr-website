@@ -1,0 +1,208 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import FeatureActions from '../components/FeatureActions.astro';
+import Showcase from '../components/Showcase.astro';
+import ProductMedia from '../components/ProductMedia.astro';
+import variablesCrop from '../assets/gql-variables-form-crop.webp';
+import operations from '../assets/gql_multi_queries-detail.webp';
+import variables from '../assets/gql_var_form-detail.webp';
+import schema from '../assets/gql_schema-detail.webp';
+import autocomplete from '../assets/gql_autocomplete-detail.webp';
+---
+
+<FeaturePage
+  title="Purr — GraphQL Client for macOS"
+  description="A GraphQL client for macOS with schema-aware editing, autocomplete, multiple operations, structured variables, and a full schema explorer."
+  name="GraphQL client"
+  variant="graphql-page"
+>
+  <header class="container feature-hero graphql-hero">
+    <div>
+      <p class="eyebrow magenta">GRAPHQL CLIENT / MACOS</p>
+      <h1>
+        GraphQL deserves more than a <span class="muted">JSON textbox.</span>
+      </h1>
+      <FeatureActions docs="/docs/graphql/" label="Read GraphQL docs" />
+    </div>
+    <div class="feature-prose">
+      <p>I have spent a lot of time working with GraphQL APIs.</p>
+      <p>
+        Browser-based GraphQL tools are great when everything is simple. But eventually the schema
+        is behind authentication, requests need custom headers, you want to keep queries around, or
+        you are switching between several operations and variable sets.
+      </p>
+      <p>
+        At that point I usually ended up moving back into a general HTTP client. The problem is that
+        GraphQL support in many HTTP clients still feels like a special body type for a POST
+        request.
+      </p>
+      <p class="feature-emphasis">Purr treats GraphQL as its own workflow.</p>
+    </div>
+  </header>
+  <section class="container graphql-workbench" aria-label="Explore the GraphQL client">
+    <Showcase
+      id="graphql-client"
+      label="GraphQL workflows"
+      variant="graphql-showcase"
+      items={[
+        {
+          label: 'Operations',
+          image: operations,
+          alt: 'Purr GraphQL document with Cases and CaseDetails operations and individual send controls',
+          description: 'Multiple operations. Run the one you need.',
+        },
+        {
+          label: 'Variables',
+          image: variables,
+          alt: 'Purr structured GraphQL variables with a CaseStatus enum selector, pageSize field, and Form or JSON switch',
+          description: 'Typed variables. A form when you want it, JSON when you need it.',
+        },
+        {
+          label: 'Schema',
+          image: schema,
+          alt: 'Purr full GraphQL schema explorer showing queries, types, field arguments and descriptions',
+          description: 'Explore the schema without losing your request.',
+        },
+        {
+          label: 'Autocomplete',
+          image: autocomplete,
+          alt: 'Purr GraphQL editor suggesting schema fields including typename, assignee and author',
+          description: 'Schema-aware suggestions as you write.',
+        },
+      ]}
+    />
+  </section>
+  <section class="container graphql-chapters">
+    <article>
+      <span class="chapter-number">01 / EDITOR</span>
+      <div>
+        <h2>Write queries with the schema beside you.</h2>
+        <p>
+          Once Purr connects to the schema, the editor can use it for field autocomplete, argument
+          suggestions, type information, hover documentation, and operation awareness.
+        </p>
+        <p>
+          You do not have to constantly jump between the query and a separate schema page just to
+          remember what a field accepts.
+        </p>
+      </div>
+    </article>
+    <article>
+      <span class="chapter-number">02 / OPERATIONS</span>
+      <div>
+        <h2>Choose the operation you actually want to run.</h2>
+        <p>A GraphQL document often contains more than one query or mutation.</p>
+        <p>
+          Purr detects the operations in the document and lets you send the one you want directly,
+          instead of forcing you to constantly rewrite the body or maintain separate copies of the
+          same document.
+        </p>
+      </div>
+    </article>
+  </section>
+  <section class="container variables-story">
+    <div>
+      <p class="eyebrow magenta">VARIABLES DO NOT HAVE TO BE RAW JSON</p>
+      <h2>
+        Fill the variables.
+        <br />
+        <span class="muted">Don’t rewrite the object.</span>
+      </h2>
+      <p>
+        I never liked having to manually edit the object every time I wanted to change one value.
+      </p>
+      <p>
+        Purr can render GraphQL variables as a structured form based on the operation. Required
+        values are visible, scalar types are clear, enums can be selected, and you can change a
+        value without touching the JSON structure.
+      </p>
+      <p>If you prefer JSON, it is still there.</p>
+    </div>
+    <ProductMedia
+      src={variablesCrop}
+      alt="GraphQL variables form with the required CaseStatus enum expanded to show PENDING, IN_PROGRESS and CLOSED, a pageSize value of 5, and the Form / JSON switch"
+      caption="Choose a status, set the page size, or switch to JSON."
+      class="variables-form-preview"
+    />
+  </section>
+  <section class="container schema-story">
+    <p class="eyebrow magenta">THE SCHEMA IS NOT HIDDEN IN A SIDEBAR</p>
+    <h2>Browse the API properly.</h2>
+    <p>
+      Purr has a full schema explorer rather than treating introspection as a small helper panel.
+      For a type, you can move through its fields and understand how the schema is connected without
+      losing your current request.
+    </p>
+    <ul class="schema-types">
+      {['Queries', 'Mutations', 'Types', 'Fields', 'Arguments', 'Descriptions', 'Nested types'].map(
+        (type) => (
+          <li>{type}</li>
+        ),
+      )}
+    </ul>
+    <div class="schema-workflow">
+      <div>
+        <h3>Documentation should lead somewhere.</h3>
+        <p>
+          If you find a query or mutation while browsing the schema, you can use it as the starting
+          point for a request instead of manually rebuilding the operation in the editor.
+        </p>
+        <p>The schema is not only reference documentation. It is part of the request workflow.</p>
+      </div>
+      <ol class="feature-flow vertical-flow" aria-label="Start a GraphQL request from the schema">
+        <li>Schema field</li>
+        <li>Create operation</li>
+        <li>Fill variables</li>
+        <li>Send</li>
+      </ol>
+    </div>
+  </section>
+  <section class="container feature-editorial">
+    <div>
+      <p class="eyebrow magenta">AUTHENTICATION STAYS IN THE WORKSPACE</p>
+      <h2>GraphQL does not live in an isolated browser tab.</h2>
+    </div>
+    <div class="feature-prose">
+      <p>
+        If the schema requires authentication or custom headers, it uses the same workspace concepts
+        as the rest of Purr.
+      </p>
+      <p>
+        That means your GraphQL workflow can use the same environments, authentication, variables,
+        and <a href="/local-first-api-client/">local workspace</a> as your HTTP requests.
+      </p>
+      <p>No browser extension just to inject a header.</p>
+    </div>
+  </section>
+  <section class="container graphql-loop">
+    <p class="eyebrow magenta">BUILT FOR GRAPHQL</p>
+    <h2>GraphQL is a first-class document type in Purr.</h2>
+    <p>
+      The goal is not to reproduce every specialized GraphQL IDE feature. It is to make the common
+      GraphQL workflow feel native inside an API client.
+    </p>
+    <ol class="workflow-checklist">
+      {[
+        'Connect the schema',
+        'Write or browse an operation',
+        'Fill variables',
+        'Send one of several operations',
+        'Inspect the response',
+        'Keep the request in your workspace',
+      ].map((step, i) => (
+        <li>
+          <span>0{i + 1}</span>
+          {step}
+        </li>
+      ))}
+    </ol>
+  </section>
+  <section class="container feature-end">
+    <h2>Use GraphQL without treating it like a POST body.</h2>
+    <p>
+      Schema-aware editing, proper variables, multiple operations, and a full explorer live in the
+      same workspace as the rest of your API requests.
+    </p>
+    <FeatureActions docs="/docs/graphql/" label="GraphQL documentation" />
+  </section>
+</FeaturePage>

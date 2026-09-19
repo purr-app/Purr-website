@@ -1,0 +1,94 @@
+---
+const items = [
+  {
+    title: 'Tracing',
+    text: 'Follow a request from the response into its Jaeger trace.',
+    href: '/tracing/',
+    action: 'Learn about tracing',
+  },
+  {
+    title: 'GraphQL',
+    text: 'Schema-aware editing, structured variables, and multiple operations.',
+    href: '/graphql-client/',
+    action: 'Explore GraphQL',
+  },
+  {
+    title: 'Local-first',
+    text: 'Local workspaces, encrypted sensitive data, and no required account.',
+    href: '/local-first-api-client/',
+    action: 'Why local-first',
+  },
+  {
+    title: 'Documentation',
+    text: 'Setup guides and technical details.',
+    href: '/docs/',
+    action: 'Read the docs',
+  },
+];
+---
+
+<nav class="explore-purr container" aria-labelledby="explore-purr-title">
+  <h2 id="explore-purr-title">Explore Purr</h2>
+  <div class="explore-links">
+    {items.map((item) => (
+      <a href={item.href}>
+        <h3>{item.title}</h3>
+        <p>{item.text}</p>
+        <span>
+          {item.action} <span aria-hidden="true">↗</span>
+        </span>
+      </a>
+    ))}
+  </div>
+</nav>
+<style>
+  .explore-purr {
+    padding-block: 48px 60px;
+    border-top: 1px solid var(--border);
+  }
+  h2 {
+    font-size: 22px;
+    margin-bottom: 26px;
+    letter-spacing: -0.5px;
+  }
+  .explore-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 30px;
+  }
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 12px;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  a > span {
+    font-size: 12px;
+    color: #b8c9e6;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+  a:hover h3 {
+    color: #8bb8fc;
+  }
+  @media (max-width: 700px) {
+    .explore-links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px 20px;
+    }
+  }
+  @media (max-width: 380px) {
+    .explore-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
