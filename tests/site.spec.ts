@@ -7,6 +7,23 @@ test('homepage semantics, assets, accessible tabs and local links', async ({ pag
   await page.goto('/');
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveText('API work, with lessUI in the way.');
+  await expect(page.locator('link[rel="icon"]')).toHaveCount(4);
+  await expect(page.locator('link[rel="icon"][sizes="48x48"]')).toHaveAttribute(
+    'href',
+    '/favicon-48x48.png',
+  );
+  await expect(page.locator('link[rel="icon"][sizes="96x96"]')).toHaveAttribute(
+    'href',
+    '/favicon-96x96.png',
+  );
+  await expect(page.locator('link[rel="icon"][sizes="any"]')).toHaveAttribute(
+    'href',
+    '/favicon.ico',
+  );
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute(
+    'href',
+    '/apple-touch-icon.png',
+  );
   await expect(page.locator('img:not([alt])')).toHaveCount(0);
   await expect(page.locator('img[alt=""]')).toHaveCount(0);
   const graphql = page.locator('#graphql');
@@ -161,6 +178,10 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
     '/robots.txt',
     '/sitemap-index.xml',
     '/purr.svg',
+    '/favicon.ico',
+    '/favicon-48x48.png',
+    '/favicon-96x96.png',
+    '/apple-touch-icon.png',
     '/og.png',
     '/site.webmanifest',
     '/third-party-licenses.txt',
