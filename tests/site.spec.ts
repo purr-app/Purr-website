@@ -170,7 +170,10 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
   expect(robots).toContain('Allow: /');
   expect(robots).toContain('Sitemap: https://usepurr.com/sitemap-index.xml');
   await page.goto('/download/');
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await expect(page.getByRole('link', { name: 'Download latest DMG' })).toHaveAttribute(
+    'href',
+    'https://releases.usepurr.com/latest/Purr.dmg',
+  );
   await page.goto('/changelog/');
   await expect(page.getByText('Example release')).toHaveCount(0);
   await expect(page.getByText('v0.4.0')).toHaveCount(0);
@@ -303,4 +306,16 @@ test('hero scale is clamped, layout-stable, and disabled with reduced motion', a
     'aria-selected',
     'true',
   );
+});
+
+test('first beta changelog has the approved version, date, and base capabilities', async ({
+  page,
+}) => {
+  await page.goto('/changelog/');
+  const release = page.locator('[id="v0.1.0"]');
+  await expect(release.getByRole('heading', { name: 'v0.1.0', exact: true })).toBeVisible();
+  await expect(release.locator('time')).toHaveAttribute('datetime', '2026-09-19T00:00:00.000Z');
+  await expect(release).toContainText('first macOS beta');
+  await expect(release).toContainText('GraphQL schema exploration');
+  await expect(release).toContainText('Local-first workspaces');
 });

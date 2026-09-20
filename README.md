@@ -20,7 +20,7 @@ Copy `.env.example` to `.env` and supply verified public URLs:
 ```dotenv
 PUBLIC_SITE_URL=https://usepurr.com
 PUBLIC_NOINDEX=false
-PUBLIC_DOWNLOAD_URL=https://your-verified-macos-download
+PUBLIC_DOWNLOAD_URL=https://releases.usepurr.com/latest/Purr.dmg
 PUBLIC_GITHUB_URL=https://github.com/purr-app/Purr
 PUBLIC_LICENSE_URL=https://your-published-license
 ```
@@ -31,7 +31,7 @@ Keep credentials out of these `PUBLIC_` values: Astro embeds them into the gener
 
 The production domain `https://usepurr.com` is the build-time default, so release builds have the correct canonical URLs even when no environment file is present. `PUBLIC_SITE_URL` can override it for another production domain; it controls canonical URLs, sitemap entries, robots.txt discovery, structured data, and social metadata. Set `PUBLIC_NOINDEX=true` only for private preview or staging builds.
 
-Download and license links lead to local holding pages if URLs are absent. GitHub links point directly to `https://github.com/purr-app/Purr`, the origin found in the local Purr checkout, and can be overridden with `PUBLIC_GITHUB_URL`. There is no local GitHub page. Anonymous access to this remote returned 404 during verification; its public visibility is not assumed. No binary, license grant, software release date, price, security certification, or tracking policy for the desktop app is invented. Supply the official app privacy notice before public launch; the existing privacy page explains only this website and the approved local storage claim.
+Download buttons default to `https://releases.usepurr.com/latest/Purr.dmg`, a universal macOS DMG alias updated by the private release CI after signed updater artifacts are uploaded. The site needs no rebuild for each release and no browser manifest fetch or CORS configuration. R2/CDN must respect the alias’s `no-cache` header. The first private release must be published before this URL serves a binary. The license link leads to a local holding page if its URL is absent. GitHub links point directly to `https://github.com/purr-app/Purr`, the origin found in the local Purr checkout, and can be overridden with `PUBLIC_GITHUB_URL`. There is no local GitHub page. Anonymous access to this remote returned 404 during verification; its public visibility is not assumed. No binary, license grant, software release date, price, security certification, or tracking policy for the desktop app is invented. Supply the official app privacy notice before public launch; the existing privacy page explains only this website and the approved local storage claim.
 
 Deploy the contents of `dist/` to any static host. Use directory index support and serve `404.html` for missing routes. `public/_headers` supplies cache and baseline security headers on hosts that support that format; configure equivalent headers on other hosts.
 
@@ -75,3 +75,5 @@ npm test
 ```
 
 Tests run against the production preview on port 4322. The ten test groups cover accessible Focus Mode and GraphQL tabs, timed rotation and interaction pauses, the 80% video visibility threshold, clamped Hero scaling, the three-image layout comparison, mobile scrolling and navigation, internal destinations, play-once / hold / replay behavior, reduced motion, Docs progress notices, schema metadata, draft exclusion, robots/sitemap, and axe WCAG A/AA checks. See `VERIFICATION.md` for the completed review and remaining launch inputs.
+
+The first product changelog entry is `src/content/changelog/0.1.0.md`. Its date is 2026-09-19, matching the existing public v0.1.0 release at the owner’s request; binary publication is a separate private-CI step. Product versions/notes are independent of the public core dependency version. Keep this entry aligned with private `CHANGELOG.md`, and add future product entries when preparing their releases.
