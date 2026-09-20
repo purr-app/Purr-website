@@ -52,6 +52,12 @@ const robots = noindex || indexingDisabled ? 'noindex, follow' : 'index, follow'
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="/llms.txt"
+      title="Purr documentation for AI agents"
+    />
     <link rel="preload" href={spaceFont} as="font" type="font/woff2" crossorigin="anonymous" />
     <slot name="head" />
   </head>

@@ -42,6 +42,7 @@ Deploy the contents of `dist/` to any static host. Use directory index support a
 - `src/pages/index.astro`: landing page.
 - `src/content/docs/*.md`: intentionally short, approved feature overviews, ready for detailed documentation later.
 - `src/content/changelog/*.{md,mdx}`: release notes.
+- `src/pages/llms.txt.ts`: concise product and documentation map for AI agents.
 - `src/content.config.ts`: typed Content Collection schemas.
 - `src/layouts/Docs.astro`: desktop sidebar, mobile navigation, generated table of contents, and previous / next navigation.
 - `src/styles/global.css`: palette, typography, responsive layouts, and accessible focus styles.
@@ -76,4 +77,6 @@ npm test
 
 Tests run against the production preview on port 4322. The ten test groups cover accessible Focus Mode and GraphQL tabs, timed rotation and interaction pauses, the 80% video visibility threshold, clamped Hero scaling, the three-image layout comparison, mobile scrolling and navigation, internal destinations, play-once / hold / replay behavior, reduced motion, Docs progress notices, schema metadata, draft exclusion, robots/sitemap, and axe WCAG A/AA checks. See `VERIFICATION.md` for the completed review and remaining launch inputs.
 
-The first product changelog entry is `src/content/changelog/0.1.0.md`, dated 2026-09-20 as requested. Binary publication is a separate private-CI step. Product versions/notes are independent of the public core dependency version. Keep this entry aligned with private `CHANGELOG.md`, and add future product entries when preparing their releases.
+Product changelog entries `0.1.0.md` and `0.1.1.md` are dated 2026-09-20. Binary publication is a separate private-CI step. Product versions and notes are independent of the public core dependency version. Keep website entries aligned with private `CHANGELOG.md`.
+
+Production builds emit `index, follow`, self-canonical URLs, a sitemap that includes Download, Changelog, docs and feature pages, and `/llms.txt`. Only the 404 and placeholder License pages intentionally remain `noindex`. After deployment, request validation in Search Console for any stale noindex report; “discovered” or “crawled, currently not indexed” is Google’s selection state rather than a blocking directive from the site.

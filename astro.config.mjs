@@ -8,10 +8,7 @@ export default defineConfig({
   site,
   output: 'static',
   trailingSlash: 'always',
-  integrations: [
-    mdx(),
-    sitemap({ filter: (page) => !/\/(404|download|github|license)\//.test(page) }),
-  ],
+  integrations: [mdx(), sitemap({ filter: (page) => !/\/(404|github|license)\//.test(page) })],
   markdown: { shikiConfig: { theme: 'github-dark-default', wrap: true } },
   devToolbar: { enabled: false },
 });

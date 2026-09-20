@@ -169,6 +169,18 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toContain('Allow: /');
   expect(robots).toContain('Sitemap: https://usepurr.com/sitemap-index.xml');
+  const sitemap = await (await request.get('/sitemap-0.xml')).text();
+  expect(sitemap).toContain('https://usepurr.com/download/');
+  expect(sitemap).toContain('https://usepurr.com/changelog/');
+  expect(sitemap).toContain('https://usepurr.com/docs/variables/');
+  for (const route of ['/download/', '/changelog/', '/docs/variables/']) {
+    await page.goto(route);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      `https://usepurr.com${route}`,
+    );
+  }
   await expect(page.locator('#main-nav .nav-download')).toHaveAttribute('href', '/download/');
   await page.locator('#main-nav .nav-download').click();
   await expect(page).toHaveURL(/\/download\/$/);
@@ -189,6 +201,7 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
     '/apple-touch-icon.png',
     '/og.png',
     '/site.webmanifest',
+    '/llms.txt',
     '/third-party-licenses.txt',
   ])
     expect((await request.get(path)).ok(), path).toBeTruthy();
@@ -320,7 +333,13 @@ test('first beta changelog has the approved version, date, and base capabilities
   await expect(release).toContainText('first macOS beta');
   await expect(release).toContainText('GraphQL schema exploration');
   await expect(release).toContainText('Local-first workspaces');
-  await expect(release).toContainText('Tracing.');
+  await expect(release).toContainText('Jaeger, Purr’s first integration');
   await expect(release).not.toContainText('Intel');
+  await expect(release).not.toContainText('macOS app for Apple Silicon');
   await expect(release).not.toContainText('Request timing and diagnostics');
+
+  const fixes = page.locator('[id="v0.1.1"]');
+  await expect(fixes.getByRole('heading', { name: 'v0.1.1', exact: true })).toBeVisible();
+  await expect(fixes).toContainText('Jaeger now appears');
+  await expect(fixes).toContainText('Keychain password');
 });
