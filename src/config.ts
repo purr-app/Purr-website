@@ -6,7 +6,8 @@ const external = (value: string | undefined, fallback: string) => {
 };
 export const links = {
   github: external(import.meta.env.PUBLIC_GITHUB_URL, 'https://github.com/purr-app/Purr'),
-  download: external(
+  download: '/download/',
+  downloadArtifact: external(
     import.meta.env.PUBLIC_DOWNLOAD_URL,
     'https://releases.usepurr.com/latest/Purr.dmg',
   ),

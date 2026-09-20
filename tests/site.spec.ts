@@ -169,7 +169,9 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toContain('Allow: /');
   expect(robots).toContain('Sitemap: https://usepurr.com/sitemap-index.xml');
-  await page.goto('/download/');
+  await expect(page.locator('#main-nav .nav-download')).toHaveAttribute('href', '/download/');
+  await page.locator('#main-nav .nav-download').click();
+  await expect(page).toHaveURL(/\/download\/$/);
   await expect(page.getByRole('link', { name: 'Download latest DMG' })).toHaveAttribute(
     'href',
     'https://releases.usepurr.com/latest/Purr.dmg',
@@ -314,8 +316,11 @@ test('first beta changelog has the approved version, date, and base capabilities
   await page.goto('/changelog/');
   const release = page.locator('[id="v0.1.0"]');
   await expect(release.getByRole('heading', { name: 'v0.1.0', exact: true })).toBeVisible();
-  await expect(release.locator('time')).toHaveAttribute('datetime', '2026-09-19T00:00:00.000Z');
+  await expect(release.locator('time')).toHaveAttribute('datetime', '2026-09-20T00:00:00.000Z');
   await expect(release).toContainText('first macOS beta');
   await expect(release).toContainText('GraphQL schema exploration');
   await expect(release).toContainText('Local-first workspaces');
+  await expect(release).toContainText('Tracing.');
+  await expect(release).not.toContainText('Intel');
+  await expect(release).not.toContainText('Request timing and diagnostics');
 });
