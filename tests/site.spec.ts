@@ -190,6 +190,15 @@ test('docs anchors, structured data, changelog draft exclusion and machine-reada
   );
   await page.goto('/changelog/');
   await expect(page.getByText('Example release')).toHaveCount(0);
+  await expect(page.locator('.release-entry > h2')).toHaveText([
+    'v0.2.1',
+    'v0.2.0',
+    'v0.1.1',
+    'v0.1.0',
+  ]);
+  await expect(page.locator('[id="v0.2.0"]')).toContainText(
+    'Import Postman collections and environments into Purr.',
+  );
   await expect(page.getByText('v0.4.0')).toHaveCount(0);
   for (const path of [
     '/robots.txt',

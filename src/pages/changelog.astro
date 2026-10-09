@@ -2,7 +2,9 @@
 import Base from '../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 const entries = (await getCollection('changelog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  (a, b) =>
+    b.data.date.getTime() - a.data.date.getTime() ||
+    b.data.version.localeCompare(a.data.version, 'en', { numeric: true }),
 );
 const releases = await Promise.all(
   entries.map(async (entry) => ({ entry, ...(await render(entry)) })),
