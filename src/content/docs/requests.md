@@ -6,7 +6,9 @@ order: 2
 
 ## Compose and inspect
 
-Headers, auth, body, timing and response data stay close without competing for your screen.
+Choose the HTTP method and enter the URL in the request editor. Use **Params**, **Headers**, **Auth**, and **Body** to configure the request, then click **Send**.
+
+Start with the [first-request walkthrough](/docs/getting-started/#send-your-first-request), or see [Responses](/docs/responses/) to inspect the result.
 
 ## Response filtering
 

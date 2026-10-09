@@ -1,5 +1,8 @@
 ---
 import Base from './Base.astro';
+import NavLinks from '../components/docs/NavLinks.astro';
+import OnThisPage from '../components/docs/OnThisPage.astro';
+import '../styles/docs.css';
 import { getCollection } from 'astro:content';
 interface Props {
   title: string;
@@ -20,28 +23,14 @@ const next = current ? entries[index + 1] : entries[0];
     <aside class="docs-sidebar">
       <p>DOCUMENTATION</p>
       <nav aria-label="Documentation">
-        <a href="/docs/" aria-current={!current ? 'page' : undefined}>
-          Overview
-        </a>
-        {entries.map((entry) => (
-          <a href={`/docs/${entry.id}/`} aria-current={entry.id === current ? 'page' : undefined}>
-            {entry.data.title}
-          </a>
-        ))}
+        <NavLinks entries={entries} current={current} />
       </nav>
     </aside>
     <div>
       <details class="docs-mobile-nav">
         <summary>Documentation menu</summary>
         <nav aria-label="Mobile documentation">
-          <a href="/docs/" aria-current={!current ? 'page' : undefined}>
-            Overview
-          </a>
-          {entries.map((entry) => (
-            <a href={`/docs/${entry.id}/`} aria-current={entry.id === current ? 'page' : undefined}>
-              {entry.data.title}
-            </a>
-          ))}
+          <NavLinks entries={entries} current={current} />
         </nav>
       </details>
       <article class="docs-article">
@@ -77,15 +66,6 @@ const next = current ? entries[index + 1] : entries[0];
         </nav>
       </article>
     </div>
-    <aside class="docs-toc">
-      <p>ON THIS PAGE</p>
-      <nav aria-label="On this page">
-        {headings
-          .filter((h) => h.depth === 2)
-          .map((h) => (
-            <a href={`#${h.slug}`}>{h.text}</a>
-          ))}
-      </nav>
-    </aside>
+    <OnThisPage headings={headings} />
   </main>
 </Base>

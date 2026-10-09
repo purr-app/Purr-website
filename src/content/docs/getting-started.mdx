@@ -1,0 +1,139 @@
+---
+title: Getting started
+description: Send your first request, inspect the response, and save it in your workspace.
+order: 1
+scaffold: false
+---
+
+import Screenshot from '../../components/docs/Screenshot.astro';
+import Demo from '../../components/docs/Demo.astro';
+import CopyValue from '../../components/docs/CopyValue.astro';
+import personal from '../../assets/docs/getting-started/personal.webp';
+import request from '../../assets/docs/getting-started/request.webp';
+import response from '../../assets/docs/getting-started/response.webp';
+import saveDialog from '../../assets/docs/getting-started/save-dialog.webp';
+import savedFolder from '../../assets/docs/getting-started/saved-folder.webp';
+import firstRequest from '../../assets/docs/getting-started/first-request-poster.webp';
+import layouts from '../../assets/docs/getting-started/layouts-poster.webp';
+
+## Install Purr
+
+[Download Purr for macOS](/download/) from the official website, open the disk image, and move Purr to Applications.
+
+Prefer to build it yourself? Clone the [public repository](https://github.com/purr-app/Purr) and follow its [Getting started instructions](https://github.com/purr-app/Purr#getting-started) for prerequisites and setup.
+
+## Meet your workspace
+
+On first launch, Purr opens a local workspace called **Personal**. An **Untitled Request** is already open in the center, ready for your first HTTP request.
+
+<Screenshot
+  src={personal}
+  eager
+  alt="Purr on first launch: the Personal workspace, an empty Documents sidebar, and an Untitled Request with GET and Send."
+  caption="Your first workspace is ready. Start with the request already open in the center."
+/>
+
+- **Activity rail, on the far left:** switch between Documents and History.
+- **Documents sidebar:** find saved requests, folders, and drafts in this workspace.
+- **Header:** choose the current workspace and environment. **No environment** is fine for this example.
+- **Request editor:** choose a method, enter a URL, and send the request.
+
+You do not need to create a workspace, folder, or environment before sending a request.
+
+## Send your first request
+
+### Enter the URL
+
+Keep the method set to **GET**. Paste this URL into the field next to it:
+
+<CopyValue value="https://jsonplaceholder.typicode.com/posts/1" />
+
+This public [JSONPlaceholder](https://jsonplaceholder.typicode.com/) endpoint returns one example post. No authentication, headers, or request body are needed.
+
+<Screenshot
+  src={request}
+  alt="The GET request URL field contains https://jsonplaceholder.typicode.com/posts/1, with Send on the right."
+  caption="Paste the URL into the request field. Leave the method set to GET."
+/>
+
+### Click Send
+
+Click **Send** to see the response. Purr automatically focuses on the response after execution in the default **Canvas** layout, collapsing the request details so the result has room.
+
+<Demo
+  src="/media/docs/getting-started/first-request.mp4"
+  poster={firstRequest}
+  label="Enter a URL, send a GET request, and see Purr focus the response"
+  caption="Enter the URL → Send → read the response. A 5-second close-up of the request editor."
+/>
+
+## Read the response
+
+You should see **200 OK** and a JSON object with `userId`, `id`, `title`, and `body`. For this URL, `id` is `1`. The response header also shows the elapsed time and response size; these can differ from the example.
+
+<Screenshot
+  src={response}
+  alt="Purr's response viewer shows 200 OK and a formatted JSON post with userId 1 and id 1."
+  caption="The response viewer: status and timing above, formatted JSON below."
+/>
+
+**Pretty** makes the JSON easier to read. Use the response tabs to inspect **Headers**, **Cookie**, or **Timeline**, or switch to **Request** to inspect the executed request. See [Responses](/docs/responses/) for more detail.
+
+If the request fails, check the URL and your network connection, then send it again. JSONPlaceholder is an external service, so it needs an internet connection.
+
+### Choose a layout
+
+The three buttons at the top right change how you see the same request and response:
+
+- **Canvas:** focus on editing, then let the response expand after execution.
+- **Horizontal split:** keep the request above the response.
+- **Vertical split:** keep the request beside the response.
+
+<Demo
+  src="/media/docs/getting-started/layouts.mp4"
+  poster={layouts}
+  label="Switch from a horizontal split to a vertical split in Purr"
+  caption="The same result, two layouts. Switch with the buttons at the top right; drag the divider to adjust the space."
+/>
+
+Changing the layout does not send the request again.
+
+## Save and organize your request
+
+### Turn the draft into a saved document
+
+As soon as you start editing, the request appears under **Drafts** in the sidebar. It is a local working draft until you save it as a named document.
+
+1. Click the **Save document** icon at the right of the tab bar, or press **⌘S**.
+2. Enter a name, such as **Get a post**.
+3. Click **Save**.
+
+<Screenshot
+  src={saveDialog}
+  alt="Save document dialog with Get a post entered as the document name and a Save button."
+  caption="Give the request a name you will recognize later."
+/>
+
+The request moves out of Drafts and into the workspace's document list. When you make further changes, use **⌘S** to update the saved request.
+
+### Keep related requests in a folder
+
+1. Click **+** next to the document search field and choose **Folder**.
+2. Name it **Getting started** and click **Save**.
+3. Open the **Get a post** actions menu, choose **Move to…**, then select **Getting started**.
+
+<Screenshot
+  src={savedFolder}
+  alt="The Documents sidebar contains a Getting started folder with the saved GET request Get a post inside."
+  caption="Folders organize requests inside the current workspace."
+/>
+
+You can reopen the request from the sidebar whenever you need it. Learn more about methods, parameters, headers, and bodies in [HTTP requests](/docs/requests/).
+
+## Next steps
+
+Continue with [Workspaces and environments](/docs/workspaces-and-environments/) to organize projects and reuse values such as a base URL across requests.
+
+- [HTTP requests](/docs/requests/) — configure what you send.
+- [Responses](/docs/responses/) — inspect what came back.
+- [Dynamic variables](/docs/variables/) — use a value from one response in another request.

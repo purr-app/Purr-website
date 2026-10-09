@@ -1,0 +1,32 @@
+---
+interface Props {
+  value: string;
+  label?: string;
+}
+const { value, label = 'Copy URL' } = Astro.props;
+---
+
+<div class="docs-copy">
+  <code>{value}</code>
+  <button type="button" data-copy-value={value} aria-label={label}>
+    {label}
+  </button>
+  <span class="sr-only" aria-live="polite"></span>
+</div>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-value]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const status = button.nextElementSibling!;
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyValue!);
+        status.textContent = 'URL copied to clipboard.';
+        button.textContent = 'Copied';
+        window.setTimeout(() => {
+          button.textContent = button.getAttribute('aria-label');
+        }, 2000);
+      } catch {
+        status.textContent = 'Could not copy. Select the URL and copy it manually.';
+      }
+    });
+  });
+</script>

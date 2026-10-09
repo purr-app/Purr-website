@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "input": "main_screen.png",
+      "output": "../../../src/assets/docs/getting-started/personal.webp",
+      "bytes": 38660,
+      "width": 2880,
+      "height": 1800,
+      "duration": null,
+      "sourceSha256": "e379cd8dcfd5090a392fd2bbf5e9a5def7f2ef8d50dc39c961d5eb78cef0ca9b",
+      "outputSha256": "057902062da487b94b050430f021a19ca4ab4e868655f1ae0bee355f668b185d"
+    },
+    {
+      "input": "source/request.png",
+      "output": "../../../src/assets/docs/getting-started/request.webp",
+      "bytes": 17036,
+      "width": 2176,
+      "height": 340,
+      "duration": null,
+      "sourceSha256": "f2728c7cc472930a358bb762818acdeefc8ebdc8f33dcd7a259492ef627c0dd7",
+      "outputSha256": "61adbb00d7acd89ea78f1884d33dce6df1f18ee4ac88c356eab86cf3548a1c7c"
+    },
+    {
+      "input": "source/response.png",
+      "output": "../../../src/assets/docs/getting-started/response.webp",
+      "bytes": 32976,
+      "width": 2176,
+      "height": 1360,
+      "duration": null,
+      "sourceSha256": "7d97f59efcf5afe1f135ec382b7e4f47fbeb9c36f60ae65f636612938b3edfbe",
+      "outputSha256": "fdcc572128d024ce8e83788b0a7db583bf6bb2bf0baecfcc790ea38ebbd1f2c2"
+    },
+    {
+      "input": "source/save-dialog.png",
+      "output": "../../../src/assets/docs/getting-started/save-dialog.webp",
+      "bytes": 16092,
+      "width": 960,
+      "height": 600,
+      "duration": null,
+      "sourceSha256": "b8783216a5b93a3dc6c511b36fd132fd19b6bf9ad08637f53bf5ae6fced09913",
+      "outputSha256": "29cb4c0b0a0612f9bbaf3d439dc36fdd697437414545fde21a5c29892fd08cdf"
+    },
+    {
+      "input": "source/saved-folder.png",
+      "output": "../../../src/assets/docs/getting-started/saved-folder.webp",
+      "bytes": 6060,
+      "width": 544,
+      "height": 340,
+      "duration": null,
+      "sourceSha256": "dc08ac4397b566a31e066abd2f82ffc862972f5c003c3fda1be0b365534728f0",
+      "outputSha256": "3f85b245394bbeaa47d7f2e42904d56ac14fbd35f7ce77ce746d0888c78e0925"
+    },
+    {
+      "input": "source/first-request.mp4",
+      "output": "../../../public/media/docs/getting-started/first-request.mp4",
+      "bytes": 196734,
+      "width": 1600,
+      "height": 1000,
+      "duration": 5.0,
+      "sourceSha256": "4cbbbf514178c19ebe55ebf6d71d50988d7ef2266427f625d00d5a47771a38be",
+      "outputSha256": "da1b531eca6efccdc562813c50a265178d956a4b615fe7243c50916fe548d394"
+    },
+    {
+      "input": "source/first-request.mp4",
+      "output": "../../../src/assets/docs/getting-started/first-request-poster.webp",
+      "bytes": 143862,
+      "width": 1600,
+      "height": 1000,
+      "duration": null,
+      "sourceSha256": "4cbbbf514178c19ebe55ebf6d71d50988d7ef2266427f625d00d5a47771a38be",
+      "outputSha256": "f3ef9aadf80bd60e1e7e666ac906409a8bdb160595373547975188aee0d3addf"
+    },
+    {
+      "input": "source/layouts.mp4",
+      "output": "../../../public/media/docs/getting-started/layouts.mp4",
+      "bytes": 85758,
+      "width": 1600,
+      "height": 1000,
+      "duration": 3.0,
+      "sourceSha256": "b475158ebe1306d076a5f023baca3a3ce599704317babe6e56334d2a56c5c0fb",
+      "outputSha256": "b16247bd35744e839a421e37a9723731379660aa61f7c7aae12bf23a1dc166e8"
+    },
+    {
+      "input": "source/layouts.mp4",
+      "output": "../../../src/assets/docs/getting-started/layouts-poster.webp",
+      "bytes": 133724,
+      "width": 1600,
+      "height": 1000,
+      "duration": null,
+      "sourceSha256": "b475158ebe1306d076a5f023baca3a3ce599704317babe6e56334d2a56c5c0fb",
+      "outputSha256": "48fe8a199c2b03cba178e5c478c8467ae9f1ed7b598fc139b5979f5dbde23a09"
+    }
+  ]
+}

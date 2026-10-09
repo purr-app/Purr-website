@@ -105,7 +105,7 @@ test('mobile menu, documentation and overflow', async ({ page }) => {
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
   await menu.click();
   await page.locator('#main-nav').getByRole('link', { name: 'Docs', exact: true }).click();
-  await page.locator('.docs-mobile-nav summary').click();
+  await page.locator('.docs-mobile-nav > summary').click();
   await page
     .locator('.docs-mobile-nav')
     .getByRole('link', { name: 'GraphQL', exact: true })

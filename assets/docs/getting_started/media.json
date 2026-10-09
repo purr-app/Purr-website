@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "type": "image",
+      "input": "main_screen.png",
+      "output": "../../../src/assets/docs/getting-started/personal.webp",
+      "crop": [
+        68,
+        52,
+        2880,
+        1800
+      ],
+      "size": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/request.png",
+      "output": "../../../src/assets/docs/getting-started/request.webp",
+      "crop": [
+        700,
+        160,
+        2176,
+        340
+      ],
+      "size": [
+        2176,
+        340
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/response.png",
+      "output": "../../../src/assets/docs/getting-started/response.webp",
+      "crop": [
+        700,
+        390,
+        2176,
+        1360
+      ],
+      "size": [
+        2176,
+        1360
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/save-dialog.png",
+      "output": "../../../src/assets/docs/getting-started/save-dialog.webp",
+      "crop": [
+        960,
+        600,
+        960,
+        600
+      ],
+      "size": [
+        960,
+        600
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/saved-folder.png",
+      "output": "../../../src/assets/docs/getting-started/saved-folder.webp",
+      "crop": [
+        144,
+        90,
+        544,
+        340
+      ],
+      "size": [
+        544,
+        340
+      ]
+    },
+    {
+      "type": "video",
+      "input": "source/first-request.mp4",
+      "output": "../../../public/media/docs/getting-started/first-request.mp4",
+      "crop": [
+        700,
+        160,
+        2176,
+        1360
+      ],
+      "size": [
+        1600,
+        1000
+      ],
+      "fps": 30,
+      "segments": [
+        {
+          "start": 2.2,
+          "end": 4.2,
+          "speed": 1
+        },
+        {
+          "start": 7.8,
+          "end": 10.8,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "input": "source/first-request.mp4",
+      "output": "../../../src/assets/docs/getting-started/first-request-poster.webp",
+      "crop": [
+        700,
+        160,
+        2176,
+        1360
+      ],
+      "size": [
+        1600,
+        1000
+      ],
+      "at": 12
+    },
+    {
+      "type": "video",
+      "input": "source/layouts.mp4",
+      "output": "../../../public/media/docs/getting-started/layouts.mp4",
+      "crop": [
+        144,
+        0,
+        2736,
+        1710
+      ],
+      "size": [
+        1600,
+        1000
+      ],
+      "fps": 30,
+      "segments": [
+        {
+          "start": 23.6,
+          "end": 26.6,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "input": "source/layouts.mp4",
+      "output": "../../../src/assets/docs/getting-started/layouts-poster.webp",
+      "crop": [
+        144,
+        0,
+        2736,
+        1710
+      ],
+      "size": [
+        1600,
+        1000
+      ],
+      "at": 26
+    }
+  ]
+}

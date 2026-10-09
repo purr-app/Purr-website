@@ -40,7 +40,7 @@ Deploy the contents of `dist/` to any static host. Use directory index support a
 - `assets/texts`: approved landing-page copy.
 - `ASSET-MAP.md`: full asset audit, section mapping, and explicit missing-asset decisions.
 - `src/pages/index.astro`: landing page.
-- `src/content/docs/*.md`: intentionally short, approved feature overviews, ready for detailed documentation later.
+- `src/content/docs/*.{md,mdx}`: Getting started walkthrough, workspaces/environments, response reference, and feature guides.
 - `src/content/changelog/*.{md,mdx}`: release notes.
 - `src/pages/llms.txt.ts`: concise product and documentation map for AI agents.
 - `src/content.config.ts`: typed Content Collection schemas.
@@ -80,3 +80,9 @@ Tests run against the production preview on port 4322. The ten test groups cover
 Product changelog entries `0.1.0.md` and `0.1.1.md` are dated 2026-09-20. Binary publication is a separate private-CI step. Product versions and notes are independent of the public core dependency version. Keep website entries aligned with private `CHANGELOG.md`.
 
 Production builds emit `index, follow`, self-canonical URLs, a sitemap that includes Download, Changelog, docs and feature pages, and `/llms.txt`. Only the 404 and placeholder License pages intentionally remain `noindex`. After deployment, request validation in Search Console for any stale noindex report; “discovered” or “crawled, currently not indexed” is Google’s selection state rather than a blocking directive from the site.
+
+## Documentation media workflow
+
+For new documentation screenshots or videos, use the standalone `../purr-demo-studio/` toolkit and follow its `AGENTS.md`. A feature description is enough to begin: inspect the real app, capture a short walkthrough, write the steps, and export readable web media. See [Getting started media](assets/docs/getting_started/README.md) for the tested workflow and [media.json](assets/docs/getting_started/media.json) for editable crop/timing recipes.
+
+Keep originals under `assets/docs/<page>/source/`, image derivatives under `src/assets/docs/<page>/`, and web videos under `public/media/docs/<page>/`. The website build consumes the derivatives and does not depend on a sibling toolkit checkout. Documentation uses the reusable `src/components/docs/` components for responsive images, explicit video playback, copyable example URLs, and grouped navigation.

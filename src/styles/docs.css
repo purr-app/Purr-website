@@ -1,0 +1,216 @@
+/* Documentation media: readable inline, full-size on demand, no autoplay. */
+.docs-media {
+  margin: 24px 0 32px;
+  min-width: 0;
+}
+.docs-media img,
+.docs-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: #0b0d14;
+}
+.docs-media video {
+  aspect-ratio: 16 / 10;
+}
+.docs-media a {
+  display: block;
+  border-radius: 10px;
+}
+.docs-media a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+.docs-media figcaption {
+  color: #a6afbf;
+  font-size: 12px;
+  line-height: 1.6;
+  padding-top: 10px;
+}
+.docs-media figcaption span {
+  margin-left: 4px;
+}
+.docs-copy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #111622;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+.docs-copy code {
+  flex: 1;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+}
+.docs-copy button {
+  flex-shrink: 0;
+  border: 1px solid #465571;
+  background: #1d2c45;
+  color: #dce8ff;
+  border-radius: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.docs-copy button:hover {
+  background: #283e60;
+}
+.docs-shell .docs-sidebar {
+  padding: 20px 14px 16px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.docs-shell .docs-sidebar > p {
+  padding-inline: 10px;
+  margin-bottom: 16px;
+}
+.docs-shell .docs-sidebar nav {
+  gap: 2px;
+}
+.docs-shell .docs-sidebar a {
+  padding: 6px 10px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.docs-shell .docs-sidebar a:hover,
+.docs-shell .docs-mobile-nav a:hover {
+  background: transparent;
+  color: var(--text);
+}
+.docs-shell .docs-sidebar a[aria-current='page'],
+.docs-shell .docs-mobile-nav a[aria-current='page'] {
+  color: #a4c9ff;
+  background: transparent;
+  font-weight: 500;
+}
+.docs-nav-group {
+  margin-top: 16px;
+}
+.docs-nav-group > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #d1d5de;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 5px;
+  list-style: none;
+  cursor: pointer;
+}
+.docs-nav-group > summary::-webkit-details-marker {
+  display: none;
+}
+.docs-nav-group > summary:hover {
+  color: var(--text);
+}
+.docs-nav-chevron {
+  width: 6px;
+  height: 6px;
+  margin-right: 3px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(-45deg);
+}
+.docs-nav-group[open] .docs-nav-chevron {
+  transform: rotate(45deg);
+}
+.docs-nav-items {
+  margin: 4px 0 0;
+  padding-left: 10px;
+}
+.docs-shell .docs-nav-items a {
+  display: block;
+  padding: 6px 10px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.docs-toc {
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.docs-shell .docs-toc > p {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+.docs-shell .docs-toc nav {
+  font-size: 14px;
+  line-height: 1.55;
+  gap: 7px;
+}
+.docs-toc a {
+  display: block;
+  padding: 4px 0;
+  color: #a6afbf;
+  font-size: 14px;
+  transition: color 200ms;
+}
+.docs-toc a:hover {
+  color: var(--text);
+}
+.docs-toc a[aria-current='location'] {
+  color: #a4c9ff;
+  font-weight: 500;
+}
+.docs-toc a[data-depth='3'] {
+  font-size: 13px;
+  padding-left: 14px;
+}
+@media (min-width: 1201px) {
+  main.docs-shell {
+    grid-template-columns: 240px minmax(0, 1fr) 175px;
+    gap: 32px;
+  }
+}
+@media (min-width: 761px) and (max-width: 1200px) {
+  main.docs-shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-toc a {
+    transition: none;
+  }
+}
+.docs-article {
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  .docs-copy {
+    align-items: flex-start;
+    padding: 12px;
+  }
+  .docs-copy code {
+    font-size: 11px;
+  }
+  .docs-media {
+    margin-block: 20px 28px;
+  }
+  .docs-media figcaption {
+    font-size: 11px;
+  }
+}
+.docs-copy .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
