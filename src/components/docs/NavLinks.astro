@@ -17,7 +17,6 @@ const groups = docsGroups.map((group) => ({
 {groups.map((group) => (
   <details
     class="docs-nav-group"
-    open
     data-docs-group={group.id}
     data-current-group={group.pages.includes(current) ? '' : undefined}
   >

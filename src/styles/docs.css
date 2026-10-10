@@ -71,10 +71,10 @@
   margin-bottom: 16px;
 }
 .docs-shell .docs-sidebar nav {
-  gap: 2px;
+  gap: 0;
 }
 .docs-shell .docs-sidebar a {
-  padding: 5px 8px;
+  padding: 3px 8px;
   font-size: 13px;
   line-height: 1.55;
 }
@@ -93,7 +93,7 @@
   color: #a4c9ff;
 }
 .docs-nav-group {
-  margin-top: 14px;
+  margin-top: 4px;
 }
 .docs-nav-group > summary {
   display: flex;
@@ -103,7 +103,7 @@
   color: #d1d5de;
   font-size: 13px;
   font-weight: 600;
-  padding: 5px 8px;
+  padding: 3px 8px;
   border-radius: 5px;
   list-style: none;
   cursor: pointer;
@@ -126,12 +126,12 @@
   transform: rotate(45deg);
 }
 .docs-nav-items {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   padding-left: 10px;
 }
 .docs-shell .docs-nav-items a {
   display: block;
-  padding: 5px 8px;
+  padding: 3px 8px;
   font-size: 13px;
   line-height: 1.55;
 }

@@ -12,7 +12,20 @@ test('task groups persist and breadcrumbs, feedback and pagination follow the pa
     'Debugging',
     'Security',
   ]);
+  await expect(page.locator('[data-docs-group][open]')).toHaveCount(0);
   const group = page.locator('.docs-sidebar [data-docs-group="requests"]');
+  await group.locator('summary').click();
+  await expect(group).toHaveAttribute('open', '');
+  await expect(group.getByRole('link', { name: 'HTTP requests', exact: true })).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => JSON.parse(localStorage.getItem('purr-docs-navigation') || '{}').requests,
+      ),
+    )
+    .toBe(true);
+  await page.reload();
+  await expect(group).toHaveAttribute('open', '');
   await group.locator('summary').click();
   await expect(group).not.toHaveAttribute('open');
   await expect
