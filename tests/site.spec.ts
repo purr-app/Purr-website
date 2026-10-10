@@ -105,11 +105,8 @@ test('mobile menu, documentation and overflow', async ({ page }) => {
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
   await menu.click();
   await page.locator('#main-nav').getByRole('link', { name: 'Docs', exact: true }).click();
-  await page.locator('.docs-mobile-nav > summary').click();
-  await page
-    .locator('.docs-mobile-nav')
-    .getByRole('link', { name: 'GraphQL', exact: true })
-    .click();
+  await page.locator('[data-open-drawer]').click();
+  await page.locator('#docs-drawer').getByRole('link', { name: 'GraphQL', exact: true }).click();
   await expect(page.locator('h1')).toHaveText('GraphQL');
   await expect(page.locator('.docs-pager .next')).toContainText('Dynamic variables');
   for (const route of ['/', '/docs/', '/changelog/']) {

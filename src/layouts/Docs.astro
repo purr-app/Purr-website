@@ -2,6 +2,8 @@
 import Base from './Base.astro';
 import NavLinks from '../components/docs/NavLinks.astro';
 import OnThisPage from '../components/docs/OnThisPage.astro';
+import Search from '../components/docs/Search.astro';
+import { docsGroups, orderDocs } from '../lib/docs-navigation';
 import '../styles/docs.css';
 import { getCollection } from 'astro:content';
 interface Props {
@@ -12,29 +14,59 @@ interface Props {
   current?: string;
 }
 const { title, description, headings = [], scaffold = true, current = '' } = Astro.props;
-const entries = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
+const entries = orderDocs(await getCollection('docs'));
 const index = entries.findIndex((entry) => entry.id === current);
 const previous = index > 0 ? entries[index - 1] : undefined;
 const next = current ? entries[index + 1] : entries[0];
+const group = docsGroups.find((group) => group.pages.includes(current));
+const entry = entries[index];
+const file = entry?.filePath || 'src/pages/docs/index.astro';
+const relativeFile = file.replace(/^.*?(?=src\/)/, '');
+const editUrl = `https://github.com/purr-app/Purr-website/edit/main/${relativeFile}`;
+const issueUrl = `https://github.com/purr-app/Purr-website/issues/new?${new URLSearchParams({ title: `Docs: ${title}`, body: `Page: ${new URL(Astro.url.pathname, Astro.site).href}\n\nWhat needs to be improved?\n` })}`;
 ---
 
 <Base title={`${title} — Purr Docs`} description={description}>
   <main id="main" class="docs-shell container">
     <aside class="docs-sidebar">
       <p>DOCUMENTATION</p>
+      <button class="docs-search-trigger" type="button" data-open-search>
+        Search docs <kbd>⌘ K</kbd>
+      </button>
       <nav aria-label="Documentation">
         <NavLinks entries={entries} current={current} />
       </nav>
     </aside>
     <div>
-      <details class="docs-mobile-nav">
-        <summary>Documentation menu</summary>
-        <nav aria-label="Mobile documentation">
-          <NavLinks entries={entries} current={current} />
-        </nav>
-      </details>
+      <div class="docs-mobile-tools">
+        <button type="button" data-open-drawer aria-controls="docs-drawer" aria-expanded="false">
+          Documentation menu
+        </button>
+        <button type="button" data-open-search>
+          Search docs
+        </button>
+      </div>
+      <OnThisPage headings={headings} mobile />
       <article class="docs-article">
-        <p class="eyebrow">PURR / DOCS</p>
+        <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
+          <a href="/">Purr</a>
+          <span aria-hidden="true">/</span>
+          {current ? (
+            <>
+              <a href="/docs/">Docs</a>
+              <span aria-hidden="true">/</span>
+              {group && group.title.toLowerCase() !== title.toLowerCase() && (
+                <>
+                  <span>{group.title}</span>
+                  <span aria-hidden="true">/</span>
+                </>
+              )}
+              <span aria-current="page">{title}</span>
+            </>
+          ) : (
+            <span aria-current="page">Docs</span>
+          )}
+        </nav>
         <h1>{title}</h1>
         <p class="docs-lead">{description}</p>
         {scaffold && (
@@ -64,8 +96,58 @@ const next = current ? entries[index + 1] : entries[0];
             </a>
           )}
         </nav>
+        <div class="docs-feedback">
+          <a href={editUrl} target="_blank" rel="noopener">
+            Edit this page on GitHub ↗
+          </a>
+          <a href={issueUrl} target="_blank" rel="noopener">
+            Report an issue ↗
+          </a>
+        </div>
       </article>
     </div>
     <OnThisPage headings={headings} />
   </main>
+  <dialog id="docs-drawer" class="docs-drawer" aria-labelledby="docs-drawer-title">
+    <div class="docs-dialog-header">
+      <h2 id="docs-drawer-title">Documentation</h2>
+      <button type="button" data-close-drawer aria-label="Close documentation menu">
+        ×
+      </button>
+    </div>
+    <nav aria-label="Mobile documentation">
+      <NavLinks entries={entries} current={current} />
+    </nav>
+  </dialog>
+  <Search />
 </Base>
+
+<script>
+  import { manageDialogKeyboard } from '../lib/docs-dialog';
+  const drawer = document.querySelector<HTMLDialogElement>('#docs-drawer')!;
+  manageDialogKeyboard(drawer);
+  const trigger = document.querySelector<HTMLButtonElement>('[data-open-drawer]')!;
+  trigger.addEventListener('click', () => {
+    drawer.showModal();
+    trigger.setAttribute('aria-expanded', 'true');
+  });
+  drawer.querySelector('[data-close-drawer]')!.addEventListener('click', () => drawer.close());
+  drawer.addEventListener('close', () => {
+    trigger.setAttribute('aria-expanded', 'false');
+  });
+  drawer.addEventListener('click', (event) => {
+    if (event.target !== drawer) return;
+    const box = drawer.getBoundingClientRect();
+    if (
+      event.clientX < box.left ||
+      event.clientX > box.right ||
+      event.clientY < box.top ||
+      event.clientY > box.bottom
+    )
+      drawer.close();
+  });
+  const desktop = matchMedia('(min-width: 761px)');
+  desktop.addEventListener('change', () => {
+    if (desktop.matches && drawer.open) drawer.close();
+  });
+</script>

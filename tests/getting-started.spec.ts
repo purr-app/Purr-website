@@ -61,7 +61,7 @@ test('left documentation groups collapse and the right outline tracks the active
   const toc = page.locator('.docs-toc');
   const group = page
     .locator('.docs-sidebar .docs-nav-group')
-    .filter({ hasText: 'Requests and responses' });
+    .filter({ has: page.locator('summary').getByText('Requests', { exact: true }) });
   const toggle = group.locator('summary');
   await expect(toc.locator('a').first()).toHaveCSS('font-size', '14px');
   await toggle.focus();
@@ -121,15 +121,12 @@ test('getting started remains readable on mobile without horizontal page overflo
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/docs/getting-started/');
-  await expect(page.locator('.docs-mobile-nav')).toBeVisible();
+  await expect(page.locator('[data-open-drawer]')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   for (const media of await page.locator('.docs-media').all()) {
     expect(await media.evaluate((el) => el.getBoundingClientRect().width)).toBeLessThan(391);
   }
-  await page.locator('.docs-mobile-nav > summary').click();
-  await page
-    .locator('.docs-mobile-nav')
-    .getByRole('link', { name: 'Responses', exact: true })
-    .click();
+  await page.locator('[data-open-drawer]').click();
+  await page.locator('#docs-drawer').getByRole('link', { name: 'Responses', exact: true }).click();
   await expect(page.locator('h1')).toHaveText('Responses');
 });

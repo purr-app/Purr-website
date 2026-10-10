@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "type": "image",
+      "input": "source/create.png",
+      "output": "../../../src/assets/docs/workspaces/create.webp",
+      "crop": [
+        960,
+        600,
+        960,
+        600
+      ],
+      "size": [
+        960,
+        600
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/import.png",
+      "output": "../../../src/assets/docs/workspaces/import.webp",
+      "crop": [
+        960,
+        480,
+        960,
+        840
+      ],
+      "size": [
+        960,
+        840
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/settings.png",
+      "output": "../../../src/assets/docs/workspaces/settings.webp",
+      "crop": [
+        640,
+        168,
+        1600,
+        820
+      ],
+      "size": [
+        1600,
+        820
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/workspace-vars.png",
+      "output": "../../../src/assets/docs/workspaces/workspace-vars.webp",
+      "crop": [
+        640,
+        168,
+        2240,
+        620
+      ],
+      "size": [
+        2240,
+        620
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/environment.png",
+      "output": "../../../src/assets/docs/workspaces/environment.webp",
+      "crop": [
+        640,
+        168,
+        2240,
+        620
+      ],
+      "size": [
+        2240,
+        620
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/effective.png",
+      "output": "../../../src/assets/docs/workspaces/effective.webp",
+      "crop": [
+        640,
+        168,
+        2240,
+        620
+      ],
+      "size": [
+        2240,
+        620
+      ]
+    },
+    {
+      "type": "image",
+      "input": "source/request.png",
+      "output": "../../../src/assets/docs/workspaces/request.webp",
+      "crop": [
+        640,
+        160,
+        2240,
+        1400
+      ],
+      "size": [
+        2240,
+        1400
+      ]
+    },
+    {
+      "input": "source/switch.mp4",
+      "crop": [
+        144,
+        0,
+        2736,
+        1710
+      ],
+      "size": [
+        1600,
+        1000
+      ],
+      "type": "video",
+      "output": "../../../public/media/docs/workspaces/switch.mp4",
+      "fps": 30,
+      "segments": [
+        {
+          "start": 2.7,
+          "end": 4.2,
+          "speed": 1
+        },
+        {
+          "start": 8.2,
+          "end": 10.7,
+          "speed": 1
+        }
+      ]
+    },
+    {
+      "input": "source/switch.mp4",
+      "crop": [
+        144,
+        0,
+        2736,
+        1710
+      ],
+      "size": [
+        1600,
+        1000
+      ],
+      "type": "frame",
+      "output": "../../../src/assets/docs/workspaces/switch-poster.webp",
+      "at": 10.5
+    }
+  ]
+}

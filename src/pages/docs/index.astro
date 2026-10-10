@@ -1,7 +1,8 @@
 ---
 import Docs from '../../layouts/Docs.astro';
 import { getCollection } from 'astro:content';
-const entries = (await getCollection('docs')).sort((a, b) => a.data.order - b.data.order);
+import { orderDocs } from '../../lib/docs-navigation';
+const entries = orderDocs(await getCollection('docs'));
 ---
 
 <Docs

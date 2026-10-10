@@ -1,0 +1,143 @@
+<dialog class="docs-search-dialog" id="docs-search" aria-labelledby="docs-search-title">
+  <div class="docs-dialog-header">
+    <h2 id="docs-search-title">Search documentation</h2>
+    <button type="button" data-close-search aria-label="Close search">
+      ×
+    </button>
+  </div>
+  <label for="docs-search-input" class="docs-visually-hidden">
+    Search documentation
+  </label>
+  <input
+    id="docs-search-input"
+    type="search"
+    placeholder="Search requests, variables, tracing…"
+    autocomplete="off"
+  />
+  <p data-search-status role="status">
+    Type to search the Purr docs.
+  </p>
+  <ul data-search-results></ul>
+</dialog>
+<script>
+  import { manageDialogKeyboard } from '../../lib/docs-dialog';
+  interface Record {
+    title: string;
+    description: string;
+    url: string;
+    text: string;
+    headings: { text: string; slug: string }[];
+  }
+  const dialog = document.querySelector<HTMLDialogElement>('#docs-search')!;
+  manageDialogKeyboard(dialog);
+  const input = dialog.querySelector<HTMLInputElement>('input')!;
+  const status = dialog.querySelector<HTMLElement>('[data-search-status]')!;
+  const results = dialog.querySelector<HTMLElement>('[data-search-results]')!;
+  let records: Record[] | undefined;
+  let pending: Promise<Record[]> | undefined;
+  function search() {
+    results.replaceChildren();
+    const query = input.value.trim().toLowerCase();
+    if (!query) {
+      status.textContent = 'Type to search the Purr docs.';
+      return;
+    }
+    if (!records) return;
+    const words = query.split(/\s+/);
+    const matches = records
+      .map((record) => {
+        const title = record.title.toLowerCase();
+        const description = record.description.toLowerCase();
+        const haystack = `${title} ${description} ${record.text.toLowerCase()}`;
+        const heading = record.headings.find((h) =>
+          words.every((w) => h.text.toLowerCase().includes(w)),
+        );
+        const score = words.every((word) => haystack.includes(word))
+          ? words.reduce(
+              (n, word) => n + (title.includes(word) ? 10 : description.includes(word) ? 4 : 1),
+              0,
+            ) + (heading ? 5 : 0)
+          : 0;
+        return { record, heading, score };
+      })
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 8);
+    status.textContent = matches.length
+      ? `${matches.length} ${matches.length === 1 ? 'result' : 'results'}`
+      : 'No results. Try another word or browse the sidebar.';
+    matches.forEach(({ record, heading }) => {
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = record.url + (heading ? `#${heading.slug}` : '');
+      const title = document.createElement('strong');
+      title.textContent = record.title;
+      const description = document.createElement('span');
+      description.textContent = heading?.text || record.description;
+      link.append(title, description);
+      li.append(link);
+      results.append(li);
+    });
+  }
+  async function open() {
+    if (dialog.open) return;
+    dialog.showModal();
+    input.focus();
+    if (!records) {
+      status.textContent = 'Loading search…';
+      try {
+        pending ||= fetch('/docs/search-index.json').then((response) => {
+          if (!response.ok) throw new Error('Search unavailable');
+          return response.json() as Promise<Record[]>;
+        });
+        records = await pending;
+      } catch {
+        pending = undefined;
+        status.textContent = 'Search is unavailable. Please try again or browse the sidebar.';
+        return;
+      }
+    }
+    search();
+  }
+  document
+    .querySelectorAll('[data-open-search]')
+    .forEach((button) => button.addEventListener('click', () => void open()));
+  dialog.querySelector('[data-close-search]')!.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) {
+      const box = dialog.getBoundingClientRect();
+      if (
+        event.clientX < box.left ||
+        event.clientX > box.right ||
+        event.clientY < box.top ||
+        event.clientY > box.bottom
+      )
+        dialog.close();
+    }
+  });
+  input.addEventListener('input', search);
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      results.querySelector('a')?.focus();
+    }
+  });
+  results.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    event.preventDefault();
+    const links = [...results.querySelectorAll('a')];
+    const next =
+      links.indexOf(document.activeElement as HTMLAnchorElement) +
+      (event.key === 'ArrowDown' ? 1 : -1);
+    if (next < 0) input.focus();
+    else links[Math.min(next, links.length - 1)]?.focus();
+  });
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      const drawer = document.querySelector<HTMLDialogElement>('#docs-drawer');
+      if (drawer?.open) drawer.close();
+      void open();
+    }
+  });
+</script>

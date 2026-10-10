@@ -1,23 +1,26 @@
 ---
+import { docsGroups } from '../../lib/docs-navigation';
 interface Props {
   entries: { id: string; data: { title: string } }[];
   current: string;
 }
 const { entries, current } = Astro.props;
-const basics = ['getting-started', 'workspaces-and-environments'];
-const api = ['requests', 'responses', 'graphql'];
-const groups = [
-  { title: 'Basics', entries: entries.filter((entry) => basics.includes(entry.id)) },
-  { title: 'Requests and responses', entries: entries.filter((entry) => api.includes(entry.id)) },
-  { title: 'Guides', entries: entries.filter((entry) => ![...basics, ...api].includes(entry.id)) },
-];
+const groups = docsGroups.map((group) => ({
+  ...group,
+  entries: group.pages.flatMap((id) => entries.filter((entry) => entry.id === id)),
+}));
 ---
 
 <a href="/docs/" aria-current={!current ? 'page' : undefined}>
   Overview
 </a>
 {groups.map((group) => (
-  <details class="docs-nav-group" open>
+  <details
+    class="docs-nav-group"
+    open
+    data-docs-group={group.id}
+    data-current-group={group.pages.includes(current) ? '' : undefined}
+  >
     <summary>
       {group.title}
       <span class="docs-nav-chevron" aria-hidden="true"></span>
@@ -31,3 +34,36 @@ const groups = [
     </div>
   </details>
 ))}
+
+<script>
+  const key = 'purr-docs-navigation';
+  const groups = [...document.querySelectorAll<HTMLDetailsElement>('[data-docs-group]')];
+  let saved: Record<string, boolean> = {};
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(key) || '{}');
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      for (const [name, state] of Object.entries(value))
+        if (typeof state === 'boolean') saved[name] = state;
+    }
+  } catch {
+    /* Navigation remains usable when storage is unavailable. */
+  }
+  groups.forEach((group) => {
+    const name = group.dataset.docsGroup!;
+    if (name in saved) group.open = saved[name];
+    group.addEventListener('toggle', () => {
+      if (saved[name] === group.open) return;
+      saved[name] = group.open;
+      groups
+        .filter((other) => other.dataset.docsGroup === name)
+        .forEach((other) => {
+          other.open = group.open;
+        });
+      try {
+        localStorage.setItem(key, JSON.stringify(saved));
+      } catch {
+        /* Optional preference. */
+      }
+    });
+  });
+</script>

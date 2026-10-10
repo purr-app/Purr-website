@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "input": "source/create.png",
+      "output": "../../../src/assets/docs/workspaces/create.webp",
+      "bytes": 17654,
+      "width": 960,
+      "height": 600,
+      "duration": null,
+      "sourceSha256": "5325eef68c3d025eb8b385c5352610459826488660ba1a4286ac1f3bd1691891",
+      "outputSha256": "67fff2f43492c0ce9224389e1c8ca421f9f2a1418af652371a7d375b1c217ce2"
+    },
+    {
+      "input": "source/import.png",
+      "output": "../../../src/assets/docs/workspaces/import.webp",
+      "bytes": 23412,
+      "width": 960,
+      "height": 840,
+      "duration": null,
+      "sourceSha256": "874b58706886f1e8b33719b9abc9d8a4551c71bb7ee383de2a98f28ad252162f",
+      "outputSha256": "ddee76cac7b5240808c33798125ba4fd4e50ee5ca45c71fa4e70bf4f56d627ef"
+    },
+    {
+      "input": "source/settings.png",
+      "output": "../../../src/assets/docs/workspaces/settings.webp",
+      "bytes": 27286,
+      "width": 1600,
+      "height": 820,
+      "duration": null,
+      "sourceSha256": "82d578e2b88b410b2bf0d8f7ba7fdb118038f7f289e76b9a1de8447f606c5881",
+      "outputSha256": "e368a7acdbde7fa69ce5dca8a54443aef3d32d87bd45b374e0f789a603b8d504"
+    },
+    {
+      "input": "source/workspace-vars.png",
+      "output": "../../../src/assets/docs/workspaces/workspace-vars.webp",
+      "bytes": 27048,
+      "width": 2240,
+      "height": 620,
+      "duration": null,
+      "sourceSha256": "430ca19f1d39a4f5d153798b872a0da739e12aedf4ff780639a73d7a89c806f3",
+      "outputSha256": "5ece5b3061b5983f91360f4b490610fa291cddcd69053c19eb0f2b9aa0480d4f"
+    },
+    {
+      "input": "source/environment.png",
+      "output": "../../../src/assets/docs/workspaces/environment.webp",
+      "bytes": 20866,
+      "width": 2240,
+      "height": 620,
+      "duration": null,
+      "sourceSha256": "339197136c5468f6fd3a64465c7d5e3eeba79fa969ad33e0ce9806ea3f76a633",
+      "outputSha256": "0eb214883c572e5c5241d868873ebb77e1030bbcb24a653bf4e943660a164841"
+    },
+    {
+      "input": "source/effective.png",
+      "output": "../../../src/assets/docs/workspaces/effective.webp",
+      "bytes": 21318,
+      "width": 2240,
+      "height": 620,
+      "duration": null,
+      "sourceSha256": "b3151418d29f7cd98da4986af4b34d84b836380a9a4d40fe00d38e59fa8a7583",
+      "outputSha256": "23162897d3514df677733dc76a46eb4e5aa3d271fa288912d318b84d386855fc"
+    },
+    {
+      "input": "source/request.png",
+      "output": "../../../src/assets/docs/workspaces/request.webp",
+      "bytes": 46798,
+      "width": 2240,
+      "height": 1400,
+      "duration": null,
+      "sourceSha256": "5ad65e589719e86a241a43f4a87acb10f93339ccefa713c16c3c94eb25c040de",
+      "outputSha256": "fb05a72044e943ccde4da5af4fee8d9304855e6bf39a14eaf8890a8d420b96c2"
+    },
+    {
+      "input": "source/switch.mp4",
+      "output": "../../../public/media/docs/workspaces/switch.mp4",
+      "bytes": 43506,
+      "width": 1600,
+      "height": 1000,
+      "duration": 4.0,
+      "sourceSha256": "cb24f67490f0cdd7bddb4482ac35f91c0dd7d23a8ee26bffcd76ef461928208a",
+      "outputSha256": "4ce89678c205b2782f6cf8b2e99da63533b98f5b383d381b00b13f5ff249ccee"
+    },
+    {
+      "input": "source/switch.mp4",
+      "output": "../../../src/assets/docs/workspaces/switch-poster.webp",
+      "bytes": 49962,
+      "width": 1600,
+      "height": 1000,
+      "duration": null,
+      "sourceSha256": "cb24f67490f0cdd7bddb4482ac35f91c0dd7d23a8ee26bffcd76ef461928208a",
+      "outputSha256": "e76161e9180bf1bf86fea18fac350a7dfd22039bc4e69c723925dbe7e2eda248"
+    }
+  ]
+}

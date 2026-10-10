@@ -6,41 +6,70 @@ interface Heading {
 }
 interface Props {
   headings: Heading[];
+  mobile?: boolean;
 }
-const { headings } = Astro.props;
-const outline = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const { headings, mobile = false } = Astro.props;
+// Keep long guides scannable: H2s and at most two H3s per section, never H4+.
+let children = 0;
+const outline = headings.filter((h) => {
+  if (h.depth === 2) {
+    children = 0;
+    return true;
+  }
+  return h.depth === 3 && ++children <= 2;
+});
 ---
 
-{outline.length > 0 && (
-  <aside class="docs-toc" data-docs-toc>
-    <p>On this page</p>
-    <nav aria-label="On this page">
-      {outline.map((heading) => (
-        <a href={`#${heading.slug}`} data-depth={heading.depth}>
-          {heading.text}
-        </a>
-      ))}
-    </nav>
-  </aside>
-)}
+{outline.length > 0 &&
+  (mobile ? (
+    <details class="docs-toc-mobile" data-docs-toc>
+      <summary>
+        On this page <span data-toc-current></span>
+      </summary>
+      <nav aria-label="On this page, mobile">
+        {outline.map((heading) => (
+          <a href={`#${heading.slug}`} data-depth={heading.depth}>
+            {heading.text}
+          </a>
+        ))}
+      </nav>
+    </details>
+  ) : (
+    <aside class="docs-toc" data-docs-toc>
+      <p>On this page</p>
+      <nav aria-label="On this page">
+        {outline.map((heading) => (
+          <a href={`#${heading.slug}`} data-depth={heading.depth}>
+            {heading.text}
+          </a>
+        ))}
+      </nav>
+    </aside>
+  ))}
 
 <script>
-  const toc = document.querySelector<HTMLElement>('[data-docs-toc]');
-  if (toc) {
-    const links = [...toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
-    const sections = links
+  const tocs = [...document.querySelectorAll<HTMLElement>('[data-docs-toc]')];
+  if (tocs.length) {
+    const links = tocs.flatMap((toc) => [
+      ...toc.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'),
+    ]);
+    const sections = [...tocs[0].querySelectorAll<HTMLAnchorElement>('a[href^="#"]')]
       .map((link) => ({
         link,
         heading: document.getElementById(decodeURIComponent(link.hash.slice(1))),
       }))
       .filter((section) => section.heading);
-    let current: HTMLAnchorElement | undefined;
+    let current = '';
     function activate(link: HTMLAnchorElement) {
-      if (current === link) return;
-      current = link;
+      if (current === link.hash) return;
+      current = link.hash;
       links.forEach((item) => {
-        if (item === link) item.setAttribute('aria-current', 'location');
+        if (item.hash === current) item.setAttribute('aria-current', 'location');
         else item.removeAttribute('aria-current');
+      });
+      tocs.forEach((toc) => {
+        const label = toc.querySelector('[data-toc-current]');
+        if (label) label.textContent = link.textContent;
       });
     }
     function update() {
@@ -57,5 +86,14 @@ const outline = headings.filter((h) => h.depth === 2 || h.depth === 3);
     sections.forEach(({ heading }) => observer.observe(heading!));
     window.addEventListener('hashchange', update);
     update();
+    tocs
+      .filter((toc) => toc instanceof HTMLDetailsElement)
+      .forEach((toc) => {
+        toc.querySelectorAll('a').forEach((link) =>
+          link.addEventListener('click', () => {
+            (toc as HTMLDetailsElement).open = false;
+          }),
+        );
+      });
   }
 </script>

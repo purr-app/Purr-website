@@ -83,6 +83,6 @@ Production builds emit `index, follow`, self-canonical URLs, a sitemap that incl
 
 ## Documentation media workflow
 
-For new documentation screenshots or videos, use the standalone `../purr-demo-studio/` toolkit and follow its `AGENTS.md`. A feature description is enough to begin: inspect the real app, capture a short walkthrough, write the steps, and export readable web media. See [Getting started media](assets/docs/getting_started/README.md) for the tested workflow and [media.json](assets/docs/getting_started/media.json) for editable crop/timing recipes.
+For new documentation screenshots or videos, use the standalone `../purr-demo-studio/` toolkit and follow its `AGENTS.md`. A feature description is enough to begin: inspect the real app, capture a short walkthrough, write the steps, and export readable web media. See [Getting started media](assets/docs/getting_started/README.md) for the tested workflow and [media.json](assets/docs/getting_started/media.json) for editable crop/timing recipes. [Workspaces media](assets/docs/workspaces/README.md) adds a complete variables/environment example with Retina crops and a four-second switching demo.
 
 Keep originals under `assets/docs/<page>/source/`, image derivatives under `src/assets/docs/<page>/`, and web videos under `public/media/docs/<page>/`. The website build consumes the derivatives and does not depend on a sibling toolkit checkout. Documentation uses the reusable `src/components/docs/` components for responsive images, explicit video playback, copyable example URLs, and grouped navigation.
